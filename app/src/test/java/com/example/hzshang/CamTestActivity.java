@@ -1,4 +1,4 @@
-package com.example.hzshang.faceunlock;
+package com.example.hzshang;
 
 
 import java.io.File;
@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.example.hzshang.faceunlock.R;
 import com.example.hzshang.faceunlock.camera.Preview;
 
 

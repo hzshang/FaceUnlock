@@ -1,8 +1,6 @@
 package com.example.hzshang.faceunlock;
 
 import android.app.ActivityManager;
-import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +8,6 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -53,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
         smartLock=(LinearLayout)findViewById(R.id.smart_lock);
         smartLock.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
-                Intent intent=new Intent(MainActivity.this,CamTestActivity.class);
-                startActivity(intent);
+//                Intent intent=new Intent(MainActivity.this,CamTestActivity.class);
+//                startActivity(intent);
             }
         });
 

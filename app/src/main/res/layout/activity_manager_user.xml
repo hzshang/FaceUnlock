@@ -7,11 +7,15 @@
     tools:context="com.example.hzshang.faceunlock.ManagerUser">
 
     <LinearLayout
-        android:layout_width="368dp"
-        android:layout_height="495dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/linearLayout3"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/menu_add_user"
@@ -21,23 +25,23 @@
             android:background="@drawable/selector"
             android:clickable="true"
             android:orientation="horizontal"
-            android:weightSum="1"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="8dp">
 
             <ImageView
                 android:id="@+id/image_group_add"
-                android:layout_width="50dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:paddingLeft="20dp"
                 android:scaleType="center"
                 app:srcCompat="@drawable/ic_group_add" />
 
             <TextView
                 android:id="@+id/text_group"
-                android:layout_width="240dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1.5"
+                android:layout_weight="4"
                 android:gravity="center"
                 android:paddingLeft="10dp"
                 android:text="@string/add_user"
@@ -46,10 +50,11 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="60dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:scaleType="center"
-                app:srcCompat="@drawable/ic_array" />
+                app:srcCompat="@drawable/ic_arrow" />
 
         </LinearLayout>
 
@@ -63,10 +68,21 @@
             android:text="@string/user_list"
             android:textAlignment="textStart" />
 
-        <ListView
-            android:id="@+id/mgr_user"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/mgr_user"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
+
 </android.support.constraint.ConstraintLayout>

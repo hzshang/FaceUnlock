@@ -28,9 +28,11 @@
     <string name="error_face">未扫描到人脸</string>
     <string name="error_group">创建分组失败</string>
     <string name="error_network">网络出问题了</string>
+    <string name="error_to_many_faces">检测到多张人脸</string>
 
 
-
+    <string name="upload_confirm">确认</string>
+    <string name="reCamera">重拍</string>
 
 
     <string name="picture">Picture</string>

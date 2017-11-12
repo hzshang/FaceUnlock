@@ -4,7 +4,6 @@ package com.example.hzshang.faceunlock.lib;
 import android.content.Context;
 
 import com.example.hzshang.faceunlock.R;
-import com.example.hzshang.faceunlock.common.Dialog;
 import com.microsoft.projectoxford.face.FaceServiceClient;
 
 

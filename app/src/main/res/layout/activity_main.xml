@@ -7,13 +7,12 @@
         tools:context="com.example.hzshang.faceunlock.MainActivity">
 
         <ScrollView
-            android:layout_width="368dp"
-            android:layout_height="495dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            tools:layout_editor_absoluteY="8dp">
+            tools:layout_editor_absoluteY="6dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,17 +40,18 @@
 
                 <ImageView
                     android:id="@+id/image_switch"
-                    android:layout_width="50dp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:paddingLeft="20dp"
                     android:scaleType="center"
                     app:srcCompat="@drawable/ic_switch" />
 
                 <Switch
                     android:id="@+id/switch1"
-                    android:layout_width="240dp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="5"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:text="@string/switch_name"
@@ -85,16 +85,18 @@
 
                 <ImageView
                     android:id="@+id/image_explore"
-                    android:layout_width="50dp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:paddingLeft="20dp"
                     android:scaleType="center"
                     app:srcCompat="@drawable/ic_explore" />
 
                 <TextView
                     android:id="@+id/text_gravity"
-                    android:layout_width="119dp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="2"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:text="@string/gravity_name"
@@ -108,8 +110,9 @@
 
                 <SeekBar
                     android:id="@+id/seekBar"
-                    android:layout_width="203dp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="3"
                     android:paddingRight="20dp"
                     tools:layout_conversion_absoluteHeight="50dp"
                     tools:layout_conversion_absoluteWidth="228dp"
@@ -138,23 +141,23 @@
                 android:layout_height="60dp"
                 android:background="@drawable/selector"
                 android:clickable="true"
-                android:orientation="horizontal"
-                android:weightSum="1">
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/image_group"
-                    android:layout_width="50dp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:paddingLeft="20dp"
                     android:scaleType="center"
                     app:srcCompat="@drawable/ic_group" />
 
                 <TextView
                     android:id="@+id/text_group"
-                    android:layout_width="240dp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.5"
-                    android:gravity="center"
+                    android:layout_weight="4"
+                    android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:text="@string/manager_user"
                     android:textAlignment="textStart"
@@ -162,10 +165,11 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="60dp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/ic_array" />
+                    app:srcCompat="@drawable/ic_arrow" />
 
             </LinearLayout>
 
@@ -188,22 +192,22 @@
                 android:layout_weight="1"
                 android:background="@drawable/selector"
                 android:clickable="true"
-                android:orientation="horizontal"
-                android:weightSum="1">
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/image_lock"
-                    android:layout_width="50dp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:paddingLeft="20dp"
                     android:scaleType="center"
                     app:srcCompat="@drawable/ic_lock" />
 
                 <TextView
                     android:id="@+id/text_lock"
-                    android:layout_width="240dp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.5"
+                    android:layout_weight="4"
                     android:gravity="center"
                     android:paddingLeft="10dp"
                     android:text="@string/lock_setting"
@@ -212,10 +216,11 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="60dp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/ic_array" />
+                    app:srcCompat="@drawable/ic_arrow" />
 
             </LinearLayout>
 
@@ -268,7 +273,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="match_parent"
                 android:background="@drawable/selector"
                 android:clickable="true"
                 android:orientation="vertical">

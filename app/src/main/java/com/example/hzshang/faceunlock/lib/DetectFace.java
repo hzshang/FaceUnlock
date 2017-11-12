@@ -1,7 +1,6 @@
 package com.example.hzshang.faceunlock.lib;
 
 import android.content.Context;
-import android.os.AsyncTask;
 
 import com.example.hzshang.faceunlock.R;
 import com.example.hzshang.faceunlock.common.Dialog;
@@ -14,16 +13,17 @@ import java.io.InputStream;
  * Created by hzshang on 2017/11/4.
  */
 
-public class DetectFace extends Async<InputStream,String,Face>{
+public class DetectFace extends Async<InputStream,String,Object[]>{
 
     public DetectFace(Context context,interFace delegate) {
         super(context,delegate);
     }
 
     @Override
-    protected  Face doInBackground(InputStream... params){
+    protected  Object[] doInBackground(InputStream... params){
 
         FaceServiceClient faceServiceClient = App.getFaceServiceClient();
+        Object[] ret=new Object[2];
         try {
             publishProgress(context.getString(R.string.detect));
             // Start detection.
@@ -49,13 +49,18 @@ public class DetectFace extends Async<InputStream,String,Face>{
                             FaceServiceClient.FaceAttributeType.Noise,
                             FaceServiceClient.FaceAttributeType.Occlusion
                     });
-            if(faces.length==1)
-                return faces[0];
-            else{
-                return null;
+            if(faces.length==1){
+                ret[0]=true;
+                ret[1]=faces[0];
+            }
+            else if(faces.length>1){
+                ret[0]=false;
+                ret[1]=context.getString(R.string.error_to_many_faces);
             }
         } catch (Exception e) {
-            return null;
+            ret[0]=false;
+            ret[1]=context.getString(R.string.error_network);
         }
+        return ret;
     }
 }

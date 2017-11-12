@@ -39,7 +39,7 @@
             android:enabled="true"
             android:exported="true"></service>
 
-        <activity android:name=".CamTestActivity"></activity>
+        <activity android:name="com.example.hzshang.CamTestActivity"></activity>
     </application>
 
 </manifest>

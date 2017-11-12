@@ -8,17 +8,21 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import com.example.hzshang.faceunlock.R;
 import com.example.hzshang.faceunlock.common.Dialog;
 
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -34,7 +38,7 @@ public class Storage {
             SharedPreferences.Editor edit = sharedPreferences.edit();
             String groupId = UUID.randomUUID().toString();
             edit.putString(groupIdKey, groupId);
-            if (createGroup(context,groupId)) {
+            if (createGroup(context, groupId)) {
                 edit.apply();
                 ret = groupId;
             } else {
@@ -46,9 +50,9 @@ public class Storage {
         return ret;
     }
 
-    private static boolean createGroup(Context context,String groupId) {
+    private static boolean createGroup(Context context, String groupId) {
         String ret;
-        AddGroup addGroup = new AddGroup(context,new AddGroup.interFace<String, String>() {
+        AddGroup addGroup = new AddGroup(context, new AddGroup.interFace<String, String>() {
             @Override
             public void processFinish(String out) {
                 return;
@@ -67,40 +71,44 @@ public class Storage {
         try {
             ret = addGroup.execute(groupId).get();
         } catch (Exception e) {
-            Dialog.showDialog(context.getString(R.string.error_network),context);
+            Dialog.showDialog(context.getString(R.string.error_network), context);
             ret = null;
         }
         return ret != null;
     }
 
-    //return array userId,name,faceId,faceUrl
-    static public JSONArray getUsers(Context context) {
+    //return array userId,name,faceId,face  faceUrl==faceId
+    static public List<Map<String, Object>> getUsers(Context context) {
         sharedPreferences = getSharedPreferences(context);
-        JSONArray jsonArray=null;
         Set<String> userIds = sharedPreferences.getStringSet(context.getString(R.string.user_id_key), null);
+        List<Map<String, Object>> array = null;
         if (userIds != null) {
-            jsonArray=new JSONArray();
+            array = new ArrayList<>();
             for (String userId : userIds) {
-                JSONObject jsonObject= new JSONObject();
+                Map<String, Object> tmp = new HashMap<>();
                 String name = sharedPreferences.getString(userId + context.getString(R.string.user_name_key), "");
-                String faceUrl = sharedPreferences.getString(userId + context.getString(R.string.user_face_url_key),"");
-                String faceId=sharedPreferences.getString(userId+context.getString(R.string.user_faceId_key),"");
-                try{
-                    jsonObject.put("faceId", faceId);
-                    jsonObject.put("name",name);
-                    jsonObject.put("userId",userId);
-                    jsonObject.put("faceUrl",faceUrl);
-                    jsonArray.put(jsonObject);
-                }catch (Exception e){
+                String faceId = sharedPreferences.getString(userId + context.getString(R.string.user_faceId_key), "");
+                File facePath = getFacePath(context, faceId);
+                if (!facePath.exists()) {
+                    deleteUser();
                     continue;
                 }
+                tmp.put("name", name);
+                tmp.put("faceId", faceId);
+                tmp.put("faceUrl", facePath);
+                tmp.put("userId", userId);
+                array.add(tmp);
+
             }
         }
-        return jsonArray;
-
+        return array;
     }
 
-    public static boolean addUserInLocal(Context context, String userName, String userId, String faceId, Bitmap face) {
+    private static void deleteUser() {
+        return;
+    }
+
+    static public boolean addUserInLocal(Context context, String userName, String userId, String faceId, Bitmap face) {
         sharedPreferences = getSharedPreferences(context);
         String userKey = context.getString(R.string.user_id_key);
         //add faceId
@@ -116,20 +124,20 @@ public class Storage {
         //add faceId
         edit.putString(userId + context.getString(R.string.user_faceId_key), faceId);
         //use faceId as img file name
+        boolean ret;
         try {
-            ContextWrapper cw = new ContextWrapper(context);
-            File dir = cw.getDir(context.getString(R.string.user_face_dir_key), Context.MODE_PRIVATE);
-            File facePath = new File(dir, faceId);
+            File facePath = getFacePath(context, faceId);
             FileOutputStream fos;
             fos = new FileOutputStream(facePath);
             face.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.close();
-            edit.putString(faceId + context.getString(R.string.user_face_url_key), facePath.getAbsolutePath());
             edit.apply();
-            return true;
+            ret = true;
         } catch (Exception e) {
-            return false;
+            Log.e("file error", e.toString());
+            ret = false;
         }
+        return ret;
     }
 
     static private SharedPreferences getSharedPreferences(Context context) {
@@ -140,5 +148,11 @@ public class Storage {
             ret = sharedPreferences;
         }
         return ret;
+    }
+
+    static private File getFacePath(Context context, String faceId) {
+        ContextWrapper cw = new ContextWrapper(context);
+        File dir = cw.getDir(context.getString(R.string.user_face_dir_key), Context.MODE_PRIVATE);
+        return new File(dir, faceId);
     }
 }

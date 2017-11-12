@@ -76,7 +76,6 @@ public class AddUser extends AppCompatActivity {
             bitmap = (Bitmap) extras.get("data");
             imageView.setImageBitmap(bitmap);
         } else {
-            showMsg(getString(R.string.error_camera));
             finish();
         }
     }
@@ -158,14 +157,14 @@ public class AddUser extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
         ByteArrayInputStream inputStream = new ByteArrayInputStream(output.toByteArray());
 
-        new DetectFace(this,new DetectFace.interFace<Face, String>() {
+        new DetectFace(this,new DetectFace.interFace<Object[], String>() {
             @Override
-            public void processFinish(Face out) {
-                if (out == null) {
+            public void processFinish(Object[] out) {
+                if ((boolean)out[0] == false) {
                     progressDialog.dismiss();
-                    showMsg(getString(R.string.error_face));
+                    showMsg((String)out[1]);
                 } else {
-                    upFace = out;
+                    upFace = (Face)out[1];
                     addAUser();
                 }
             }
@@ -186,11 +185,12 @@ public class AddUser extends AppCompatActivity {
         Dialog.showDialog(out,this);
     }
     private void success() {
-        Dialog.showDialog(getString(R.string.add_user_success), this);
+
         String name = userName.getText().toString();
-        if (!Storage.addUserInLocal(this,name,tmp_personId,upFace.faceId.toString(),  bitmap)) {
+        if (Storage.addUserInLocal(this,name,tmp_personId,upFace.faceId.toString(),  bitmap)) {
+            Dialog.showDialog(getString(R.string.add_user_success), this);
+        }else{
             Dialog.showDialog(getString(R.string.error_addUser),this);
-            //delete user added ?
         }
     }
 }

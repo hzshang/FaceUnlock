@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import com.example.hzshang.faceunlock.lib.Storage;
 
@@ -15,6 +16,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ManagerUser extends AppCompatActivity {
     private LinearLayout linearLayout;
@@ -44,19 +46,9 @@ public class ManagerUser extends AppCompatActivity {
 
     //wait to better
     private void showUsers() {
-        List<String> strs = new ArrayList<String>();
-        JSONArray users = Storage.getUsers(this);
-        if (users != null) {
-            for (int i = 0; i < users.length(); i++)
-                try {
-                    JSONObject tmp = (JSONObject) users.get(i);
-                    strs.add(tmp.getString("name"));
-                } catch (Exception e) {
-                    continue;
-                }
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, strs);
-            listView.setAdapter(adapter);
-        }
-    }
 
+        List<String> strs = new ArrayList<String>();
+        SimpleAdapter simpleAdapter = new SimpleAdapter(this, Storage.getUsers(this), R.layout.user, new String[]{"name","faceUrl"}, new int[]{R.id.name,R.id.face});
+        listView.setAdapter(simpleAdapter);
+    }
 }
