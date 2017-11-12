@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="user_id_key">user_id_key</string>
+    <string name="user_name_key">_name</string>
+    <string name="user_faceId_key">_face</string>
+    <string name="user_face_url_key">_faceUrl</string>
+    <string name="user_face_dir_key">faceDir</string>
+    <string name="group_id_key">groupId</string>
+    <string name="preference_file_key">com.hzshang.faceUnlock.Key</string>
+
+    <string name="group_name">group</string>
+
+    <string name="azure_endpoint">https://api.cognitive.azure.cn/face/v1.0</string>
+    <string name="azure_key">9962f07cc96e4be4803f29d008b71363</string>
+</resources>

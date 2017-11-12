@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">Faceunlock</string>
+    <string name="switch_name">开启/关闭 Face Unlock</string>
+    <string name="gravity_name">重力感应角度</string>
+    <string name="general_setting">通用设置</string>
+    <string name="lock_setting">智能锁屏</string>
+    <string name="manager_user">用户管理</string>
+    <string name="add_user">添加用户</string>
+    <string name="user_list">用户列表</string>
+    <string name="user_name">用户名</string>
+    <string name="about">关于我们</string>
+    <string name="licience">使用条款</string>
+    <string name="version_name">版本</string>
+    <string name="version">v0.0.1</string>
+
+
+
+    <string name="detect">检测人脸...</string>
+    <string name="create_user">创建用户....</string>
+    <string name="upload_image">上传图片中....</string>
+
+    <string name="create_group">创建用户组....</string>
+    <string name="add_user_success">添加用户成功</string>
+    <string name="error_addUser">添加用户失败</string>
+    <string name="error_dialog">好像出错了...</string>
+    <string name="error_camera">摄像头打开失败</string>
+    <string name="error_userName">用户名不允许为空</string>
+    <string name="error_face">未扫描到人脸</string>
+    <string name="error_group">创建分组失败</string>
+    <string name="error_network">网络出问题了</string>
+
+
+
+
+
+    <string name="picture">Picture</string>
+    <string name="description_info">Info</string>
+    <string name="request_permission">This sample needs camera permission.</string>
+    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+
+    <string name="hello">Hello World, CamTestActivity!</string>
+
+    <!-- UI Elements -->
+    <string name="btn_capture">Click</string>
+
+    <!-- Toast Messages -->
+    <string name="camera_not_found">No camera harware found</string>
+    <string name="take_photo_help">Touch anywhere on screen to take picture</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+</resources>
