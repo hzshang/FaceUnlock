@@ -7,23 +7,22 @@
     tools:context="com.example.hzshang.faceunlock.ManagerUser">
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:orientation="vertical"
+        android:paddingTop="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:id="@+id/linearLayout3"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/menu_add_user"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginTop="10dp"
             android:background="@drawable/selector"
             android:clickable="true"
+            android:focusable="true"
             android:orientation="horizontal"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="8dp">
@@ -33,9 +32,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:paddingLeft="20dp"
+                android:paddingEnd="20dp"
+                android:paddingStart="20dp"
                 android:scaleType="center"
-                app:srcCompat="@drawable/ic_group_add" />
+                app:srcCompat="@drawable/ic_group_add"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/text_group"
@@ -43,10 +44,12 @@
                 android:layout_height="match_parent"
                 android:layout_weight="4"
                 android:gravity="center"
-                android:paddingLeft="10dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
                 android:text="@string/add_user"
                 android:textAlignment="textStart"
-                android:textAppearance="@style/TextAppearance.AppCompat" />
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                tools:ignore="RtlCompat" />
 
             <ImageView
                 android:id="@+id/imageView"
@@ -54,7 +57,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="center"
-                app:srcCompat="@drawable/ic_arrow" />
+                app:srcCompat="@drawable/ic_arrow"
+                tools:ignore="ContentDescription" />
 
         </LinearLayout>
 
@@ -64,9 +68,11 @@
             android:layout_height="30dp"
             android:background="@color/colorTextBack"
             android:gravity="center"
-            android:paddingLeft="10dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
             android:text="@string/user_list"
-            android:textAlignment="textStart" />
+            android:textAlignment="textStart"
+            tools:ignore="RtlCompat" />
 
     </LinearLayout>
 

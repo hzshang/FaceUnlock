@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="60dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     android:orientation="horizontal">
@@ -11,18 +12,19 @@
         android:id="@+id/face"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
         android:layout_weight="4"
         android:gravity="center_vertical"
-        android:padding="5dp"
-        android:text="用户1"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
         android:textAlignment="textStart"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="14sp" />
@@ -31,10 +33,12 @@
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
         android:layout_weight="1"
         android:adjustViewBounds="false"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp"
         android:scaleType="center"
-        app:srcCompat="@drawable/ic_arrow" />
+        app:srcCompat="@drawable/ic_arrow"
+        tools:ignore="ContentDescription" />
 
 </LinearLayout>

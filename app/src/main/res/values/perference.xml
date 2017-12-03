@@ -9,7 +9,13 @@
     <string name="preference_file_key">com.hzshang.faceUnlock.Key</string>
 
     <string name="group_name">group</string>
-
-    <string name="azure_endpoint">https://api.cognitive.azure.cn/face/v1.0</string>
-    <string name="azure_key">9962f07cc96e4be4803f29d008b71363</string>
+    <string name="switch_pin_key">switch_pin</string>
+    <string name="azure_endpoint">https://eastasia.api.cognitive.microsoft.com/face/v1.0</string>
+    <string name="azure_key">4ace4a5f151c4d2685b4943de49d1c9f</string>
+    <string name="pin_protect_answer_text">pin_protect_answer_text</string>
+    <string name="pin_question_index">pin_question_index</string>
+    <string name="SCAN_FACE">com.hzshang.faceUnlock.TAKE_PICTURE</string>
+    <string name="DETECT_SERVICE_KILLED">com.hzshang.faceUnlock.detect_service_killed</string>
+    <string name="SCAN_FACE_KILLED">com.hzshang.faceUnlock.SCAN_FACE_KILLED</string>
+    <string name="admin_label">我在申请特殊权限</string>
 </resources>

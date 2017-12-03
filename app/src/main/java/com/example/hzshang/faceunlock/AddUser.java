@@ -1,11 +1,16 @@
 package com.example.hzshang.faceunlock;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +23,7 @@ import com.example.hzshang.faceunlock.lib.DetectFace;
 import com.example.hzshang.faceunlock.lib.Storage;
 
 import com.microsoft.projectoxford.face.contract.Face;
+import com.microsoft.projectoxford.face.contract.FaceRectangle;
 
 
 import java.io.ByteArrayInputStream;
@@ -57,16 +63,37 @@ public class AddUser extends AppCompatActivity {
         });
         //take picture
         dispatchTakePictureIntent();
+
     }
 
     private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, 0);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            readyForTakePic();
         } else {
-            showMsg(getString(R.string.error_camera));
-            finish();
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    1);
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    readyForTakePic();
+                } else {
+                    Dialog.showDialog(getString(R.string.error_camera_permission), this);
+                    finish();
+                }
+        }
+    }
+
+    private void readyForTakePic() {
+        //already asked permission
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        takePictureIntent.resolveActivity(getPackageManager());
+        startActivityForResult(takePictureIntent, 0);
     }
 
     @Override
@@ -80,33 +107,34 @@ public class AddUser extends AppCompatActivity {
         }
     }
 
-    //btn onListen function
+    //button onListen function
     private void addNewUser() {
         String name = userName.getText().toString();
         if (!name.equals(""))
             detectFace();
         else
-            showMsg(getString(R.string.error_userName));
+            Dialog.showDialog(getString(R.string.error_userName), AddUser.this);
     }
 
     private void addFace2User() {
         String groupId = Storage.getGroupId(this);
         if (groupId == null) {
+            Log.e("addUser:addFace2User","groupId is null");
             return;
         }
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
         ByteArrayInputStream inputStream = new ByteArrayInputStream(output.toByteArray());
-        new AddFaceToUser(this,new AddFaceToUser.interFace<Boolean, String>() {
+        new AddFaceToUser(this, new AddFaceToUser.interFace<Boolean, String>() {
             @Override
             public void processFinish(Boolean out) {
                 progressDialog.dismiss();
-                if (out) {
+                if(out==true){
                     success();
-                    finish();
                 }else{
-                    showMsg(getString(R.string.error_face));
+                    Dialog.showDialog(getString(R.string.error_network),AddUser.this);
                 }
+                finish();
             }
 
             @Override
@@ -125,14 +153,15 @@ public class AddUser extends AppCompatActivity {
     private void addAUser() {
         String groupId = Storage.getGroupId(this);
         if (groupId == null) {
+            Log.e("addUser:addAUser","group ip is null");
             return;
         }
-        new AddUserToGroup(this,new AddUserToGroup.interFace<String, String>() {
+        new AddUserToGroup(this, new AddUserToGroup.interFace<String, String>() {
             @Override
             public void processFinish(String personId) {
                 if (personId == null) {
                     progressDialog.dismiss();
-                    showMsg(getString(R.string.error_face));
+                    Dialog.showDialog(getString(R.string.error_addUser), AddUser.this);
                 } else {
                     tmp_personId = personId;
                     addFace2User();
@@ -151,20 +180,20 @@ public class AddUser extends AppCompatActivity {
         }).execute(groupId, userName.getText().toString());
     }
 
-
+    //detect face location
     private void detectFace() {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
         ByteArrayInputStream inputStream = new ByteArrayInputStream(output.toByteArray());
 
-        new DetectFace(this,new DetectFace.interFace<Object[], String>() {
+        new DetectFace(this, new DetectFace.interFace<Object[], String>() {
             @Override
             public void processFinish(Object[] out) {
-                if ((boolean)out[0] == false) {
+                if ((boolean) out[0] == false) {
                     progressDialog.dismiss();
-                    showMsg((String)out[1]);
+                    Dialog.showDialog((String) out[1], AddUser.this);
                 } else {
-                    upFace = (Face)out[1];
+                    upFace = (Face) out[1];
                     addAUser();
                 }
             }
@@ -181,16 +210,16 @@ public class AddUser extends AppCompatActivity {
         }).execute(inputStream);
     }
 
-    private void showMsg(String out){
-        Dialog.showDialog(out,this);
-    }
     private void success() {
 
         String name = userName.getText().toString();
-        if (Storage.addUserInLocal(this,name,tmp_personId,upFace.faceId.toString(),  bitmap)) {
+        FaceRectangle rectangle = upFace.faceRectangle;
+        Bitmap cropped = Bitmap.createBitmap(bitmap, rectangle.left, rectangle.top, rectangle.width, rectangle.height);
+        if (Storage.addUserInLocal(this, name, tmp_personId, upFace.faceId.toString(), cropped)) {
             Dialog.showDialog(getString(R.string.add_user_success), this);
-        }else{
-            Dialog.showDialog(getString(R.string.error_addUser),this);
+        } else {
+            Dialog.showDialog(getString(R.string.error_addUser), this);
         }
     }
+
 }

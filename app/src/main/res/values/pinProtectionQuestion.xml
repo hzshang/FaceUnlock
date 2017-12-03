@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="questions">
+        <item>你梦想的职业是什么？</item>
+        <item>你的初恋是谁？</item>
+        <item>你最喜欢的食物是什么？</item>
+        <item>你任职的第一家公司叫什么？</item>
+        <item>你的幸运数字是什么？</item>
+        <item>你配偶的生日是什么？</item>
+        <item>你的出生地在哪里？</item>
+    </string-array>
+</resources>

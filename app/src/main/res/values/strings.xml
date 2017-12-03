@@ -1,18 +1,21 @@
 <resources>
     <string name="app_name">Faceunlock</string>
-    <string name="switch_name">开启/关闭 Face Unlock</string>
+    <string name="switch_face">开启/关闭 Face Unlock</string>
     <string name="gravity_name">重力感应角度</string>
     <string name="general_setting">通用设置</string>
-    <string name="lock_setting">智能锁屏</string>
+    <string name="pin_setting">设置密码</string>
     <string name="manager_user">用户管理</string>
     <string name="add_user">添加用户</string>
     <string name="user_list">用户列表</string>
     <string name="user_name">用户名</string>
     <string name="about">关于我们</string>
     <string name="licience">使用条款</string>
+    <string name="pin_lock">数字锁</string>
+    <string name="pin_change">修改密码</string>
+    <string name="pin_set">设置密码</string>
+    <string name="pin_protect">设置密保</string>
     <string name="version_name">版本</string>
     <string name="version">v0.0.1</string>
-
 
 
     <string name="detect">检测人脸...</string>
@@ -25,32 +28,32 @@
     <string name="error_dialog">好像出错了...</string>
     <string name="error_camera">摄像头打开失败</string>
     <string name="error_userName">用户名不允许为空</string>
-    <string name="error_face">未扫描到人脸</string>
+    <string name="error_detect_face">未扫描到人脸</string>
     <string name="error_group">创建分组失败</string>
     <string name="error_network">网络出问题了</string>
     <string name="error_to_many_faces">检测到多张人脸</string>
+    <string name="error_camera_permission">相机权限请求失败</string>
+    <string name="forget_pw">请使用人脸解锁</string>
 
 
     <string name="upload_confirm">确认</string>
     <string name="reCamera">重拍</string>
+    <string name="title_activity_lockactivity">Lockactivity</string>
 
+    <string name="pin_protect_question">密保问题</string>
+    <string name="pin_protect_answer">密保答案</string>
+    <string name="pin_protect_set_success">密保设置成功</string>
+    <string name="pin_protect_empty_error">密保问题不允许为空</string>
+    <string name="pin_protect_check">输入密保</string>
+    <string name="confirm">确认</string>
+    <string name="cancle">取消</string>
 
-    <string name="picture">Picture</string>
-    <string name="description_info">Info</string>
-    <string name="request_permission">This sample needs camera permission.</string>
-    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
-
-    <string name="hello">Hello World, CamTestActivity!</string>
-
-    <!-- UI Elements -->
-    <string name="btn_capture">Click</string>
-
-    <!-- Toast Messages -->
-    <string name="camera_not_found">No camera harware found</string>
-    <string name="take_photo_help">Touch anywhere on screen to take picture</string>
-
-    <string name="title_activity_fullscreen">FullscreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="activity_not_locked_text">Nothing should happen on this page, here for test purpose</string>
+    <string name="activity_dialog_title">Forgot you Pincode?</string>
+    <string name="activity_dialog_accept">OK</string>
+    <string name="activity_dialog_decline">CANCEL</string>
+    <string name="activity_dialog_content">Tap \'OK\' to log out, when you log back in you\'ll be able to create a new Pincode.\n\nIf you remember your Pincode, tap \'Cancel\' to go back.</string>
+    <string name="activity_appcompat_message">I am a PinCompatActivity!</string>
 </resources>

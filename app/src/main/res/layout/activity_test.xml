@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.hzshang.faceunlock.testActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="108dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp">
+
+        <Button
+            android:id="@+id/testSetPwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="set pwd=9999" />
+
+        <Button
+            android:id="@+id/testBackBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="back"
+            tools:layout_editor_absoluteX="80dp"
+            tools:layout_editor_absoluteY="331dp" />
+
+        <Button
+            android:id="@+id/testDisableBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="disable"
+            tools:layout_editor_absoluteX="224dp"
+            tools:layout_editor_absoluteY="191dp" />
+
+        <Button
+            android:id="@+id/testEnableBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="enable"
+            tools:layout_editor_absoluteX="32dp"
+            tools:layout_editor_absoluteY="39dp" />
+
+        <Button
+            android:id="@+id/testLockBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="lock"
+            tools:layout_editor_absoluteX="104dp"
+            tools:layout_editor_absoluteY="191dp" />
+
+        <Button
+            android:id="@+id/testClearRes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="clear Res" />
+
+        <Button
+            android:id="@+id/addUserRestriction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="restriction" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

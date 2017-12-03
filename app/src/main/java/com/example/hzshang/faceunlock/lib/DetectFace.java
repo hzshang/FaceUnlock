@@ -56,6 +56,9 @@ public class DetectFace extends Async<InputStream,String,Object[]>{
             else if(faces.length>1){
                 ret[0]=false;
                 ret[1]=context.getString(R.string.error_to_many_faces);
+            }else{
+                ret[0]=false;
+                ret[1]=context.getString(R.string.error_detect_face);
             }
         } catch (Exception e) {
             ret[0]=false;

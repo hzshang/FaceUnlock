@@ -12,7 +12,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            tools:layout_editor_absoluteY="6dp">
+            app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,12 +22,12 @@
             tools:layout_editor_absoluteY="148dp">
 
             <TextView
-                android:id="@+id/textView5"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:background="@color/colorTextBack"
                 android:gravity="center"
-                android:paddingLeft="10dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
                 android:text="@string/general_setting"
                 android:textAlignment="textStart" />
 
@@ -36,7 +36,7 @@
                 android:layout_height="60dp"
                 android:background="@drawable/selector"
                 android:clickable="true"
-                android:orientation="horizontal">
+                android:orientation="horizontal" android:focusable="true">
 
                 <ImageView
                     android:id="@+id/image_switch"
@@ -44,17 +44,19 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
                     android:scaleType="center"
+                    tools:ignore="ContentDescription"
                     app:srcCompat="@drawable/ic_switch" />
 
                 <Switch
-                    android:id="@+id/switch1"
+                    android:id="@+id/switch_face"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="5"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:text="@string/switch_name"
+                    android:text="@string/switch_face"
                     tools:layout_conversion_absoluteHeight="50dp"
                     tools:layout_conversion_absoluteWidth="328dp"
                     tools:layout_conversion_absoluteX="28dp"
@@ -65,7 +67,6 @@
             </LinearLayout>
 
             <View
-                android:id="@+id/view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?attr/colorControlHighlight"
@@ -77,79 +78,22 @@
                 tools:layout_editor_absoluteY="109dp" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@drawable/selector"
-                android:clickable="true"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/image_explore"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:paddingLeft="20dp"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/ic_explore" />
-
-                <TextView
-                    android:id="@+id/text_gravity"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:text="@string/gravity_name"
-                    android:textAppearance="@style/TextAppearance.AppCompat"
-                    tools:layout_conversion_absoluteHeight="50dp"
-                    tools:layout_conversion_absoluteWidth="99dp"
-                    tools:layout_conversion_absoluteX="28dp"
-                    tools:layout_conversion_absoluteY="59dp"
-                    tools:layout_editor_absoluteX="28dp"
-                    tools:layout_editor_absoluteY="59dp" />
-
-                <SeekBar
-                    android:id="@+id/seekBar"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:paddingRight="20dp"
-                    tools:layout_conversion_absoluteHeight="50dp"
-                    tools:layout_conversion_absoluteWidth="228dp"
-                    tools:layout_conversion_absoluteX="127dp"
-                    tools:layout_conversion_absoluteY="59dp"
-                    tools:layout_editor_absoluteX="127dp"
-                    tools:layout_editor_absoluteY="59dp" />
-
-            </LinearLayout>
-
-            <View
-                android:id="@+id/view2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?attr/colorControlHighlight"
-                tools:layout_conversion_absoluteHeight="1dp"
-                tools:layout_conversion_absoluteWidth="368dp"
-                tools:layout_conversion_absoluteX="8dp"
-                tools:layout_conversion_absoluteY="58dp"
-                tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="58dp" />
-
-            <LinearLayout
                 android:id="@+id/manager_user"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@drawable/selector"
                 android:clickable="true"
-                android:orientation="horizontal">
+                android:orientation="horizontal" android:focusable="true">
 
                 <ImageView
                     android:id="@+id/image_group"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:paddingLeft="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp"
                     android:scaleType="center"
+                    tools:ignore="ContentDescription"
                     app:srcCompat="@drawable/ic_group" />
 
                 <TextView
@@ -159,6 +103,7 @@
                     android:layout_weight="4"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:text="@string/manager_user"
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.AppCompat" />
@@ -169,12 +114,12 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:scaleType="center"
+                    tools:ignore="ContentDescription"
                     app:srcCompat="@drawable/ic_arrow" />
 
             </LinearLayout>
 
             <View
-                android:id="@+id/view6"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?attr/colorControlHighlight"
@@ -185,82 +130,59 @@
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="58dp" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/colorTextBack"
+                android:gravity="center"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:text="@string/pin_lock"
+                android:textAlignment="textStart" />
+
             <LinearLayout
-                android:id="@+id/smart_lock"
+                android:id="@+id/pin_set"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_weight="1"
                 android:background="@drawable/selector"
                 android:clickable="true"
+                android:focusable="true"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/image_lock"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/ic_lock" />
+                    app:srcCompat="@drawable/ic_pin_lock"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
-                    android:id="@+id/text_lock"
+                    android:id="@+id/text_pin"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="4"
                     android:gravity="center"
                     android:paddingLeft="10dp"
-                    android:text="@string/lock_setting"
+                    android:paddingRight="10dp"
+                    android:text="@string/pin_setting"
                     android:textAlignment="textStart"
-                    android:textAppearance="@style/TextAppearance.AppCompat" />
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    tools:ignore="RtlCompat" />
 
                 <ImageView
-                    android:id="@+id/imageView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/ic_arrow" />
+                    app:srcCompat="@drawable/ic_arrow"
+                    tools:ignore="ContentDescription" />
 
             </LinearLayout>
 
             <View
-                android:id="@+id/view7"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?attr/colorControlHighlight"
-                tools:layout_conversion_absoluteHeight="1dp"
-                tools:layout_conversion_absoluteWidth="368dp"
-                tools:layout_conversion_absoluteX="8dp"
-                tools:layout_conversion_absoluteY="58dp"
-                tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="58dp" />
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:background="@color/colorTextBack"
-                android:gravity="center"
-                android:paddingLeft="10dp"
-                android:text="@string/about"
-                android:textAlignment="textStart" />
-
-            <TextView
-                android:id="@+id/text_licience"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@drawable/selector"
-                android:clickable="true"
-                android:gravity="center"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:text="@string/licience"
-                android:textAlignment="textStart"
-                android:textAppearance="@style/TextAppearance.AppCompat" />
-
-            <View
-                android:id="@+id/view3"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?attr/colorControlHighlight"
@@ -272,10 +194,94 @@
                 tools:layout_editor_absoluteY="58dp" />
 
             <LinearLayout
+                android:id="@+id/pin_protect_set"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/selector"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/ic_pin_protect"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/text_pin_protect"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="@string/pin_protect"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    tools:ignore="RtlCompat" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/ic_arrow"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/colorTextBack"
+                android:gravity="center"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:text="@string/about"
+                android:textAlignment="textStart" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/selector"
+                android:clickable="true"
+                android:orientation="vertical" android:focusable="true">
+
+                <TextView
+                    android:id="@+id/text_licence"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:text="@string/licience"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.AppCompat" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorControlHighlight"
+                tools:layout_conversion_absoluteHeight="1dp"
+                tools:layout_conversion_absoluteWidth="368dp"
+                tools:layout_conversion_absoluteX="8dp"
+                tools:layout_conversion_absoluteY="109dp"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="109dp" />
+
+            <LinearLayout
+                android:id="@+id/testView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/selector"
                 android:clickable="true"
+                android:focusable="true"
                 android:orientation="vertical">
 
                 <TextView
@@ -293,25 +299,25 @@
                     android:id="@+id/text_version"
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    android:paddingLeft="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp"
                     android:text="@string/version" />
 
-            </LinearLayout>
 
+            </LinearLayout>
             <View
-                android:id="@+id/view9"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?attr/colorControlHighlight"
                 tools:layout_conversion_absoluteHeight="1dp"
                 tools:layout_conversion_absoluteWidth="368dp"
                 tools:layout_conversion_absoluteX="8dp"
-                tools:layout_conversion_absoluteY="58dp"
+                tools:layout_conversion_absoluteY="109dp"
                 tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="58dp" />
-
+                tools:layout_editor_absoluteY="109dp" />
 
         </LinearLayout>
-    </ScrollView>
+
+        </ScrollView>
 
     </android.support.constraint.ConstraintLayout>

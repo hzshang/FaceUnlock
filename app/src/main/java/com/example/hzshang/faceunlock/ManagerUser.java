@@ -4,17 +4,12 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.example.hzshang.faceunlock.lib.Storage;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +25,7 @@ public class ManagerUser extends AppCompatActivity {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(ManagerUser.this, AddUser.class);
                 startActivity(intent);
             }
@@ -46,9 +42,11 @@ public class ManagerUser extends AppCompatActivity {
 
     //wait to better
     private void showUsers() {
+        List<Map<String, Object>> users=Storage.getUsers(this);
+        if(users!=null){
+            SimpleAdapter simpleAdapter = new SimpleAdapter(this, users, R.layout.user, new String[]{"name", "faceUrl"}, new int[]{R.id.name, R.id.face});
+            listView.setAdapter(simpleAdapter);
+        }
 
-        List<String> strs = new ArrayList<String>();
-        SimpleAdapter simpleAdapter = new SimpleAdapter(this, Storage.getUsers(this), R.layout.user, new String[]{"name","faceUrl"}, new int[]{R.id.name,R.id.face});
-        listView.setAdapter(simpleAdapter);
     }
 }

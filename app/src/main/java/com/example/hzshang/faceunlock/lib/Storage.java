@@ -8,15 +8,12 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.example.hzshang.faceunlock.R;
 import com.example.hzshang.faceunlock.common.Dialog;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +26,7 @@ import java.util.UUID;
 
 public class Storage {
     static SharedPreferences sharedPreferences = null;
-
+    // group id for every phone
     static public String getGroupId(Context context) {
         sharedPreferences = getSharedPreferences(context);
         String ret;
@@ -49,7 +46,7 @@ public class Storage {
         }
         return ret;
     }
-
+    // init group id for first use
     private static boolean createGroup(Context context, String groupId) {
         String ret;
         AddGroup addGroup = new AddGroup(context, new AddGroup.interFace<String, String>() {
@@ -155,4 +152,23 @@ public class Storage {
         File dir = cw.getDir(context.getString(R.string.user_face_dir_key), Context.MODE_PRIVATE);
         return new File(dir, faceId);
     }
+    static public void setPinProtect(Context context,int index,String answer){
+        sharedPreferences=getSharedPreferences(context);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putInt(context.getString(R.string.pin_question_index),index);
+        editor.putString(context.getString(R.string.pin_protect_answer_text),answer);
+        editor.apply();
+    }
+    static public Object[] getPinProtect(Context context){
+        sharedPreferences=getSharedPreferences(context);
+        Object[] object=new Object[2];
+        object[0]=sharedPreferences.getInt(context.getString(R.string.pin_question_index),-1);
+        object[1]=sharedPreferences.getString(context.getString(R.string.pin_protect_answer_text),null);
+        return object;
+    }
+    static public boolean hasPinProtect(Context context){
+        sharedPreferences=getSharedPreferences(context);
+        return sharedPreferences.contains(context.getString(R.string.pin_question_index));
+    }
+
 }
