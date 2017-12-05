@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="user_id_key">user_id_key</string>
+    <string name="face_id_key">user_id_key</string>
     <string name="user_name_key">_name</string>
     <string name="user_faceId_key">_face</string>
     <string name="user_face_url_key">_faceUrl</string>
@@ -10,8 +10,9 @@
 
     <string name="group_name">group</string>
     <string name="switch_pin_key">switch_pin</string>
-    <string name="azure_endpoint">https://eastasia.api.cognitive.microsoft.com/face/v1.0</string>
-    <string name="azure_key">4ace4a5f151c4d2685b4943de49d1c9f</string>
+
+
+
     <string name="pin_protect_answer_text">pin_protect_answer_text</string>
     <string name="pin_question_index">pin_question_index</string>
     <string name="SCAN_FACE">com.hzshang.faceUnlock.TAKE_PICTURE</string>

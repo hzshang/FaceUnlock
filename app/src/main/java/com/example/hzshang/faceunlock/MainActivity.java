@@ -85,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
+        if(!checkPermission()){
+            return;
+        }
         switch (view.getId()) {
             case R.id.manager_user:
                 Intent intent = new Intent(MainActivity.this, ManagerUser.class);

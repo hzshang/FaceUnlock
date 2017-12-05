@@ -47,6 +47,5 @@ public class ManagerUser extends AppCompatActivity {
             SimpleAdapter simpleAdapter = new SimpleAdapter(this, users, R.layout.user, new String[]{"name", "faceUrl"}, new int[]{R.id.name, R.id.face});
             listView.setAdapter(simpleAdapter);
         }
-
     }
 }

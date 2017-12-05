@@ -2,10 +2,12 @@ package com.example.hzshang.faceunlock.lib;
 
 
 import android.content.Context;
-
+import android.util.Log;
 import com.example.hzshang.faceunlock.R;
-import com.microsoft.projectoxford.face.FaceServiceClient;
+import com.megvii.cloud.http.FaceSetOperate;
+import com.megvii.cloud.http.Response;
 
+import org.json.JSONObject;
 
 /**
  * Created by hzshang on 2017/11/4.
@@ -19,14 +21,21 @@ public class AddGroup extends Async<String,String,String>{
     @Override
     protected String doInBackground(String... params) {
         // Get an instance of face service client.
-        FaceServiceClient faceServiceClient = App.getFaceServiceClient();
+        FaceSetOperate FaceSet=App.getFaceSet();
         try{
-            String groupId=params[0];
             publishProgress(context.getString(R.string.create_group));
             // Start creating person group in server.
-            faceServiceClient.createPersonGroup(groupId,context.getString(R.string.group_name), null);
-            return groupId;
+            Response faceset = FaceSet.createFaceSet(null,null,null,null,null, 1);
+            String res = new String(faceset.getContent());
+            if(faceset.getStatus()==200){
+                JSONObject jsonObject=new JSONObject(res);
+                return jsonObject.optString("faceset_token");
+            }else{
+                Log.i("AddGroup",res);
+                return null;
+            }
         } catch (Exception e) {
+            Log.i("AddGroup","network error");
             return null;
         }
     }

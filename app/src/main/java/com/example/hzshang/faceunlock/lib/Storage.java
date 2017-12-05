@@ -33,13 +33,11 @@ public class Storage {
         String groupIdKey = context.getString(R.string.group_id_key);
         if (!sharedPreferences.contains(groupIdKey)) {
             SharedPreferences.Editor edit = sharedPreferences.edit();
-            String groupId = UUID.randomUUID().toString();
-            edit.putString(groupIdKey, groupId);
-            if (createGroup(context, groupId)) {
+            ret=createGroup(context);
+            if(ret!=null){
+                edit.putString(groupIdKey,ret);
                 edit.apply();
-                ret = groupId;
-            } else {
-                ret = null;
+                Log.i("Storage","add Group Fail");
             }
         } else {
             ret = sharedPreferences.getString(groupIdKey, null);
@@ -47,7 +45,7 @@ public class Storage {
         return ret;
     }
     // init group id for first use
-    private static boolean createGroup(Context context, String groupId) {
+    private static String createGroup(Context context) {
         String ret;
         AddGroup addGroup = new AddGroup(context, new AddGroup.interFace<String, String>() {
             @Override
@@ -66,25 +64,24 @@ public class Storage {
             }
         });
         try {
-            ret = addGroup.execute(groupId).get();
+            ret = addGroup.execute().get();
         } catch (Exception e) {
             Dialog.showDialog(context.getString(R.string.error_network), context);
             ret = null;
         }
-        return ret != null;
+        return ret;
     }
 
-    //return array userId,name,faceId,face  faceUrl==faceId
+    //return array name,faceId,face  faceUrl==faceId
     static public List<Map<String, Object>> getUsers(Context context) {
         sharedPreferences = getSharedPreferences(context);
-        Set<String> userIds = sharedPreferences.getStringSet(context.getString(R.string.user_id_key), null);
+        Set<String> faceIds = sharedPreferences.getStringSet(context.getString(R.string.face_id_key), null);
         List<Map<String, Object>> array = null;
-        if (userIds != null) {
+        if (faceIds != null) {
             array = new ArrayList<>();
-            for (String userId : userIds) {
+            for (String faceId : faceIds) {
                 Map<String, Object> tmp = new HashMap<>();
-                String name = sharedPreferences.getString(userId + context.getString(R.string.user_name_key), "");
-                String faceId = sharedPreferences.getString(userId + context.getString(R.string.user_faceId_key), "");
+                String name = sharedPreferences.getString(faceId + context.getString(R.string.user_name_key), "");
                 File facePath = getFacePath(context, faceId);
                 if (!facePath.exists()) {
                     deleteUser();
@@ -93,33 +90,30 @@ public class Storage {
                 tmp.put("name", name);
                 tmp.put("faceId", faceId);
                 tmp.put("faceUrl", facePath);
-                tmp.put("userId", userId);
                 array.add(tmp);
-
             }
         }
         return array;
     }
 
     private static void deleteUser() {
+        //TODO:delete user
         return;
     }
 
-    static public boolean addUserInLocal(Context context, String userName, String userId, String faceId, Bitmap face) {
+    static public boolean addUserInLocal(Context context, String userName, String faceId, Bitmap face) {
         sharedPreferences = getSharedPreferences(context);
-        String userKey = context.getString(R.string.user_id_key);
+        String faceKey= context.getString(R.string.face_id_key);
         //add faceId
-        Set<String> userIds = sharedPreferences.getStringSet(userKey, null);
-        if (userIds == null) {
-            userIds = new HashSet<>();
+        Set<String> faceIds = sharedPreferences.getStringSet(faceKey, null);
+        if (faceIds == null) {
+            faceIds = new HashSet<>();
         }
         SharedPreferences.Editor edit = sharedPreferences.edit();
-        userIds.add(userId);
-        edit.putStringSet(userKey, userIds);
+        faceIds.add(faceId);
+        edit.putStringSet(faceKey, faceIds);
         //add userName
-        edit.putString(userId + context.getString(R.string.user_name_key), userName);
-        //add faceId
-        edit.putString(userId + context.getString(R.string.user_faceId_key), faceId);
+        edit.putString(faceId + context.getString(R.string.user_name_key), userName);
         //use faceId as img file name
         boolean ret;
         try {

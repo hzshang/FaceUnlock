@@ -38,4 +38,6 @@ public class Async<param1,param2,param3> extends AsyncTask<param1,param2,param3>
     protected void onPostExecute(param3 ret) {
         delegate.processFinish(ret);
     }
+
+
 }

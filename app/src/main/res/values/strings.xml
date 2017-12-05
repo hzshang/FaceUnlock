@@ -24,14 +24,14 @@
 
     <string name="create_group">创建用户组....</string>
     <string name="add_user_success">添加用户成功</string>
-    <string name="error_addUser">添加用户失败</string>
+    <string name="error_add_user">添加用户失败</string>
     <string name="error_dialog">好像出错了...</string>
     <string name="error_camera">摄像头打开失败</string>
     <string name="error_userName">用户名不允许为空</string>
-    <string name="error_detect_face">未扫描到人脸</string>
+    <string name="error_no_face">未扫描到人脸</string>
     <string name="error_group">创建分组失败</string>
     <string name="error_network">网络出问题了</string>
-    <string name="error_to_many_faces">检测到多张人脸</string>
+    <string name="error_too_many_faces">检测到多张人脸</string>
     <string name="error_camera_permission">相机权限请求失败</string>
     <string name="forget_pw">请使用人脸解锁</string>
 
