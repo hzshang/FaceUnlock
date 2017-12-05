@@ -25,7 +25,6 @@ import com.example.hzshang.faceunlock.lib.Storage;
 import com.microsoft.projectoxford.face.contract.Face;
 import com.microsoft.projectoxford.face.contract.FaceRectangle;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.UUID;

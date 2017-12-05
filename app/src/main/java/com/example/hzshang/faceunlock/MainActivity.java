@@ -1,9 +1,16 @@
 package com.example.hzshang.faceunlock;
 
+import android.Manifest;
 import android.app.ActivityManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -17,11 +24,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int REQUEST_CODE_ENABLE = 11;
+    private static final int REQUEST_PERMISSION_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        checkPermission();
     }
 
     @Override
@@ -51,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_CODE_ENABLE:
                 Dialog.showDialog("pin enabled", this);
@@ -110,26 +118,60 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setPinProtect.show();
                 break;
             case R.id.testView:
-                Intent intent1 = new Intent(MainActivity.this, testActivity.class);
-                startActivity(intent1);
+//                Intent intent1 = new Intent(MainActivity.this, testActivity.class);
+//                startActivity(intent1);
                 break;
         }
+    }
+
+    private boolean checkPermission() {
+        boolean ret= ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+//                ContextCompat.checkSelfPermission(this, Manifest.permission.SYSTEM_ALERT_WINDOW) == PackageManager.PERMISSION_GRANTED;
+        if(!ret){
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.SYSTEM_ALERT_WINDOW},
+                    REQUEST_PERMISSION_CODE);
+        }
+        return ret;
     }
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
         Intent detectService = new Intent(MainActivity.this, DetectService.class);
-        Intent scanFace=new Intent(MainActivity.this,ScanFace.class);
         if (isChecked) {
-            startService(detectService);
-            startService(scanFace);
-            Dialog.showDialog("start service success", this);
+            if (checkPermission()) {
+                startService(detectService);
+                Dialog.showDialog("start service success", this);
+            } else {
+                compoundButton.setChecked(false);
+            }
         } else {
-            if (stopService(detectService) &&stopService(scanFace)) {
+            if (stopService(detectService)) {
                 Dialog.showDialog("stop service success", this);
             } else {
                 Dialog.showDialog("stop service fail", this);
             }
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_PERMISSION_CODE:
+                boolean t = true;
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < grantResults.length; i++) {
+                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED)
+                            Dialog.showDialog(permissions[i] + "授权失败", this);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+
 }

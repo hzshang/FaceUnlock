@@ -5,9 +5,11 @@ import android.app.ActivityManager;
 import android.app.KeyguardManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -17,59 +19,76 @@ import android.os.PowerManager;
 import android.util.Log;
 
 
-
 public class DetectService extends Service implements SensorEventListener {
 
     private SensorManager sManager;
     boolean resetPosition;
-    private MyReceiver myReceiver;
-    private PowerManager pm;
+    private MyReceiver myReceiver;//listen screen on/off
     private PowerManager.WakeLock wl;
-    private ActivityManager am;
+    private ScanFace.MyBinder myBinder;
+    private Sensor mSensorOrientation;
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            myBinder = (ScanFace.MyBinder) iBinder;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            myBinder = null;
+        }
+    };
 
     private class MyReceiver extends BroadcastReceiver {
 
         public MyReceiver() {
             super();
         }
+
         @Override
         public void onReceive(Context context, Intent intent) {
-            String action=intent.getAction();
-            if(action.equals(Intent.ACTION_SCREEN_ON)){
+            String action = intent.getAction();
+            if (action.equals(Intent.ACTION_SCREEN_ON)) {
                 handleScreenOn();
-            }else if(action.equals(Intent.ACTION_SCREEN_OFF)){
+            } else if (action.equals(Intent.ACTION_SCREEN_OFF)) {
                 handleScreenOff();
             }
         }
     }
 
     private void handleScreenOff() {
-        sManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        Sensor mSensorOrientation = sManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
         sManager.registerListener((SensorEventListener) this, mSensorOrientation, SensorManager.SENSOR_DELAY_UI);
-        Log.i("wake screen","off");
+        Log.i("wake screen", "off");
     }
 
     private void handleScreenOn() {
         sManager.unregisterListener(this);
-        Log.i("wake screen","success");
-
+        Log.i("wake screen", "success");
         //scan face
-        Intent intent=new Intent();
-        intent.setAction(getString(R.string.SCAN_FACE));
-        sendBroadcast(intent);
+        if (myBinder != null) {
+            myBinder.startTakePicAndUnlock();
+        } else {
+            Log.i("Detect Service", "myBinder is null");
+        }
     }
 
 
     @Override
     public void onCreate() {
+        Log.i("Detect Service", "onCreate excute");
         super.onCreate();
-        resetPosition=true;
+        resetPosition = true;
+        //bind scanFace service
+        Intent intent = new Intent(this, ScanFace.class);
+        bindService(intent, mConnection, BIND_AUTO_CREATE);
+        //get sensor device
+        sManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        mSensorOrientation= sManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        //DISABLE KEYGUARD
         KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
         KeyguardManager.KeyguardLock keyguardLock = km.newKeyguardLock("");
         keyguardLock.disableKeyguard();
-
-         am= (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
     }
 
     @Override
@@ -79,16 +98,18 @@ public class DetectService extends Service implements SensorEventListener {
         intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
         registerReceiver(myReceiver, intentFilter);
-        pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wl=pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "bright");
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "bright");
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         sManager.unregisterListener(this);
         unregisterReceiver(myReceiver);
+        if (mConnection != null)
+            unbindService(mConnection);
+        super.onDestroy();
     }
 
 
@@ -103,13 +124,14 @@ public class DetectService extends Service implements SensorEventListener {
         if (resetPosition && unlock) {
             wakeScreen();
         }
-        resetPosition=!unlock;
+        resetPosition = !unlock;
     }
 
     private void wakeScreen() {
         wl.acquire();
         wl.release();
     }
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
         return;
@@ -124,7 +146,6 @@ public class DetectService extends Service implements SensorEventListener {
     public boolean stopService(Intent name) {
         return super.stopService(name);
     }
-
 
     @Override
     public IBinder onBind(Intent intent) {

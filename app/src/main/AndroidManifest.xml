@@ -8,13 +8,13 @@
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-feature android:name="android.hardware.camera" />
-
-    <user-feature
-        android:name="android.software.device_admin"
-        android:required="true" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <!--<user-feature android:name="android.software.device_admin" android:required="true" />-->
 
     <application
+        android:allowBackup="true"
         android:name=".lib.App"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -24,7 +24,6 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -35,29 +34,32 @@
             android:name=".AddUser"
             android:label="@string/add_user" />
         <activity android:name=".LockActivity" />
-
-        <service
-            android:name=".DetectService"
-            android:process=".process1"/>
-
-        <activity android:name=".testActivity" />
-
+        <activity android:name=".testActivity"
+            android:process="com.example.hzshang.faceunlock.DetectService"/>
         <receiver
             android:name=".MyAdmin"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data
                 android:name="android.app.device_admin"
-                android:label="@string/admin_label"
                 android:resource="@xml/device_admin" />
 
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
-
+        <service
+            android:name=".DetectService"
+            android:enabled="true"
+            android:process="com.example.hzshang.faceunlock.DetectService"/>
         <service
             android:name=".ScanFace"
-            android:process=".process2"/>
+            android:enabled="true"
+            android:process="com.example.hzshang.faceunlock.DetectService"
+            />
+        <service android:name=".camera.TakePicture"
+            android:enabled="true"
+            android:process="com.example.hzshang.faceunlock.DetectService"
+            />
     </application>
 
 </manifest>
