@@ -1,4 +1,4 @@
-package com.example.hzshang.faceunlock.lib;
+package com.hzshang.faceunlock.lib;
 
 import org.json.JSONObject;
 

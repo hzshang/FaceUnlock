@@ -1,4 +1,4 @@
-package com.example.hzshang.faceunlock.lib;
+package com.hzshang.faceunlock.lib;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -13,7 +13,7 @@ public class Async<param1,param2,param3> extends AsyncTask<param1,param2,param3>
     public interface  interFace < param1 , param2> {
         void processFinish(param1 out);
         void processPre();
-        void processRuning(param2 progress);
+        void processRunning(param2 progress);
     }
 
     public interFace delegate = null;
@@ -32,7 +32,7 @@ public class Async<param1,param2,param3> extends AsyncTask<param1,param2,param3>
     }
     @Override
     protected void onProgressUpdate(param2... process){
-        delegate.processRuning(process[0]);
+        delegate.processRunning(process[0]);
     }
     @Override
     protected void onPostExecute(param3 ret) {

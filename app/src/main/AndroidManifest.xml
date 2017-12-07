@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.hzshang.faceunlock">
+    package="com.hzshang.faceunlock">
 
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -8,22 +8,26 @@
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-    <!--<user-feature android:name="android.software.device_admin" android:required="true" />-->
 
+    <!-- <uses-permission android:name="android.permission.STATUS_BAR" /> -->
+    <!-- <user-feature android:name="android.software.device_admin" android:required="true" /> -->
     <application
+        android:name=".common.App"
         android:allowBackup="true"
-        android:name=".lib.App"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:screenOrientation="landscape"
+        android:sharedUserId="android.uid.system"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -34,8 +38,10 @@
             android:name=".AddUser"
             android:label="@string/add_user" />
         <activity android:name=".LockActivity" />
-        <activity android:name=".testActivity"
-            android:process="com.example.hzshang.faceunlock.DetectService"/>
+        <activity
+            android:name=".testActivity"
+            android:process="com.hzshang.faceunlock.Service" />
+
         <receiver
             android:name=".MyAdmin"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
@@ -47,19 +53,24 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
+
         <service
-            android:name=".DetectService"
+            android:name=".service.SensorService"
             android:enabled="true"
-            android:process="com.example.hzshang.faceunlock.DetectService"/>
+            android:process="com.hzshang.faceunlock.Service" />
         <service
-            android:name=".ScanFace"
+            android:name=".service.ScanService"
             android:enabled="true"
-            android:process="com.example.hzshang.faceunlock.DetectService"
-            />
-        <service android:name=".camera.TakePicture"
+            android:process="com.hzshang.faceunlock.Service" />
+        <service
+            android:name=".camera.TakePicture"
             android:enabled="true"
-            android:process="com.example.hzshang.faceunlock.DetectService"
-            />
+            android:process="com.hzshang.faceunlock.Service" />
+        <service
+            android:name=".service.ManagerService"
+            android:enabled="true"
+            android:exported="true"
+            android:process="com.hzshang.faceunlock.Service"/>
     </application>
 
 </manifest>

@@ -1,9 +1,10 @@
-package com.example.hzshang.faceunlock.lib;
+package com.hzshang.faceunlock.lib;
 
 
 import android.content.Context;
 import android.util.Log;
-import com.example.hzshang.faceunlock.R;
+import com.hzshang.faceunlock.R;
+import com.hzshang.faceunlock.common.App;
 import com.megvii.cloud.http.FaceSetOperate;
 import com.megvii.cloud.http.Response;
 
@@ -21,7 +22,7 @@ public class AddGroup extends Async<String,String,String>{
     @Override
     protected String doInBackground(String... params) {
         // Get an instance of face service client.
-        FaceSetOperate FaceSet=App.getFaceSet();
+        FaceSetOperate FaceSet= App.getFaceSet();
         try{
             publishProgress(context.getString(R.string.create_group));
             // Start creating person group in server.

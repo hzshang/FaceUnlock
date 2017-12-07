@@ -1,4 +1,4 @@
-package com.example.hzshang.faceunlock;
+package com.hzshang.faceunlock;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -16,11 +16,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.example.hzshang.faceunlock.common.Dialog;
-import com.example.hzshang.faceunlock.lib.AddFaceToGroup;
-import com.example.hzshang.faceunlock.lib.DetectFace;
-import com.example.hzshang.faceunlock.lib.Face;
-import com.example.hzshang.faceunlock.lib.Storage;
+import com.hzshang.faceunlock.common.Dialog;
+import com.hzshang.faceunlock.lib.AddFaceToGroup;
+import com.hzshang.faceunlock.lib.DetectFace;
+import com.hzshang.faceunlock.lib.Face;
+import com.hzshang.faceunlock.lib.Storage;
 
 import java.io.ByteArrayOutputStream;
 
@@ -100,7 +100,7 @@ public class AddUser extends AppCompatActivity {
             }
 
             @Override
-            public void processRuning(String progress) {
+            public void processRunning(String progress) {
                 progressDialog.setMessage(progress);
             }
         }).execute(byteArray);
@@ -137,7 +137,7 @@ public class AddUser extends AppCompatActivity {
             }
 
             @Override
-            public void processRuning(String progress) {
+            public void processRunning(String progress) {
                 progressDialog.setMessage(progress);
             }
         }).execute(upFace.faceToken,groupId);

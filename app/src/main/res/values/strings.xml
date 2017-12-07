@@ -21,6 +21,7 @@
     <string name="detect">检测人脸...</string>
     <string name="create_user">创建用户....</string>
     <string name="upload_image">上传图片中....</string>
+    <string name="identify">验证人脸...</string>
 
     <string name="create_group">创建用户组....</string>
     <string name="add_user_success">添加用户成功</string>
@@ -34,6 +35,7 @@
     <string name="error_too_many_faces">检测到多张人脸</string>
     <string name="error_camera_permission">相机权限请求失败</string>
     <string name="forget_pw">请使用人脸解锁</string>
+    <string name="empty_user">未添加用户</string>
 
 
     <string name="upload_confirm">确认</string>

@@ -1,4 +1,4 @@
-package com.example.hzshang.faceunlock;
+package com.hzshang.faceunlock;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import com.example.hzshang.faceunlock.lib.Storage;
+import com.hzshang.faceunlock.lib.Storage;
 
 import java.util.List;
 import java.util.Map;

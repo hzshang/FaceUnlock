@@ -1,4 +1,4 @@
-package com.example.hzshang.faceunlock.lib;
+package com.hzshang.faceunlock.lib;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.hzshang.faceunlock.R;
+import com.hzshang.faceunlock.R;
 
 /**
  * Created by hzshang on 2017/12/1.

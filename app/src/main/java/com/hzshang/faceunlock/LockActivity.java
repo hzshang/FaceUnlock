@@ -1,4 +1,4 @@
-package com.example.hzshang.faceunlock;
+package com.hzshang.faceunlock;
 
 import android.app.Activity;
 import android.content.res.Resources;
@@ -6,7 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import com.example.hzshang.faceunlock.common.Dialog;
+import com.hzshang.faceunlock.common.Dialog;
 import com.github.omadahealth.lollipin.lib.managers.AppLock;
 import com.github.omadahealth.lollipin.lib.managers.AppLockActivity;
 

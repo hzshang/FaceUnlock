@@ -1,16 +1,14 @@
-package com.example.hzshang.faceunlock.lib;
+package com.hzshang.faceunlock.lib;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.example.hzshang.faceunlock.R;
+import com.hzshang.faceunlock.R;
+import com.hzshang.faceunlock.common.App;
 import com.megvii.cloud.http.CommonOperate;
 import com.megvii.cloud.http.Response;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.InputStream;
 
 /**
  * Created by hzshang on 2017/11/4.

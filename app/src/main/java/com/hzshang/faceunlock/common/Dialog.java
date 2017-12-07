@@ -1,4 +1,4 @@
-package com.example.hzshang.faceunlock.common;
+package com.hzshang.faceunlock.common;
 
 import android.content.Context;
 import android.widget.Toast;

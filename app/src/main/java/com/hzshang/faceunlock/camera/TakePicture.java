@@ -1,4 +1,4 @@
-package com.example.hzshang.faceunlock.camera;
+package com.hzshang.faceunlock.camera;
 
 import android.app.Service;
 import android.content.Context;
@@ -101,6 +101,7 @@ public class TakePicture extends Service {
                                         Bitmap face=BitmapFactory.decodeByteArray(bytes,0,bytes.length);
                                         face=rotateBitmap(face,270);
                                         Bundle bundle = new Bundle();
+//                                        bundle.putByteArray(BITMAP,face);
                                         bundle.putParcelable(BITMAP,face);
                                         mReceiver.send(RESULT_OK, bundle);
                                         Log.i("TakePicture", "send face");

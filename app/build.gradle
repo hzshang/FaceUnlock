@@ -4,7 +4,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.example.hzshang.faceunlock"
+        applicationId "com.hzshang.faceunlock"
         minSdkVersion 24
         targetSdkVersion 26
         versionCode 1
@@ -43,6 +43,7 @@ buildscript {
 dependencies {
     implementation 'com.android.support:design:26.1.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'org.greenrobot:eventbus:3.1.1'
     compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:support-v13:26.1.0'

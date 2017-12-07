@@ -1,4 +1,4 @@
-package com.example.hzshang.faceunlock.lib;
+package com.hzshang.faceunlock.lib;
 
 /**
  * Created by hzshang on 2017/11/4.
@@ -10,8 +10,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.example.hzshang.faceunlock.R;
-import com.example.hzshang.faceunlock.common.Dialog;
+import com.hzshang.faceunlock.R;
+import com.hzshang.faceunlock.common.Dialog;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -59,7 +59,7 @@ public class Storage {
             }
 
             @Override
-            public void processRuning(String process) {
+            public void processRunning(String process) {
                 return;
             }
         });
@@ -152,6 +152,11 @@ public class Storage {
         editor.putInt(context.getString(R.string.pin_question_index),index);
         editor.putString(context.getString(R.string.pin_protect_answer_text),answer);
         editor.apply();
+    }
+    static public boolean userIsEmpty(Context context){
+        sharedPreferences = getSharedPreferences(context);
+        Set<String> faceIds = sharedPreferences.getStringSet(context.getString(R.string.face_id_key), null);
+        return faceIds==null;
     }
     static public Object[] getPinProtect(Context context){
         sharedPreferences=getSharedPreferences(context);

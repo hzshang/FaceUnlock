@@ -1,7 +1,7 @@
-package com.example.hzshang.faceunlock.lib;
+package com.hzshang.faceunlock.common;
 
 import android.app.Application;
-import com.example.hzshang.faceunlock.R;
+import com.hzshang.faceunlock.R;
 import com.megvii.cloud.http.CommonOperate;
 import com.megvii.cloud.http.FaceSetOperate;
 

@@ -1,7 +1,5 @@
-package com.example.hzshang.faceunlock;
+package com.hzshang.faceunlock.service;
 
-
-import android.app.ActivityManager;
 import android.app.KeyguardManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -18,104 +16,82 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 
+import com.hzshang.faceunlock.common.Message;
 
-public class DetectService extends Service implements SensorEventListener {
+import org.greenrobot.eventbus.EventBus;
+
+
+public class SensorService extends Service implements SensorEventListener {
 
     private SensorManager sManager;
-    boolean resetPosition;
+    boolean resetPosition;//prevent repeated wake-up
     private MyReceiver myReceiver;//listen screen on/off
     private PowerManager.WakeLock wl;
-    private ScanFace.MyBinder myBinder;
     private Sensor mSensorOrientation;
 
-    private ServiceConnection mConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            myBinder = (ScanFace.MyBinder) iBinder;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            myBinder = null;
-        }
-    };
 
     private class MyReceiver extends BroadcastReceiver {
-
-        public MyReceiver() {
-            super();
-        }
-
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals(Intent.ACTION_SCREEN_ON)) {
-                handleScreenOn();
-            } else if (action.equals(Intent.ACTION_SCREEN_OFF)) {
-                handleScreenOff();
+            if (action == null) {
+                Log.e("SensorService", "action is null");
+                return;
+            }
+            switch (action) {
+                case Intent.ACTION_SCREEN_ON:
+                    handleScreenOn();
+                    break;
+                case Intent.ACTION_SCREEN_OFF:
+                    handleScreenOff();
+                    break;
+                default:
+                    break;
             }
         }
     }
 
     private void handleScreenOff() {
         sManager.registerListener((SensorEventListener) this, mSensorOrientation, SensorManager.SENSOR_DELAY_UI);
-        Log.i("wake screen", "off");
+        Log.i("SensorService", "screen off");
     }
 
     private void handleScreenOn() {
         sManager.unregisterListener(this);
-        Log.i("wake screen", "success");
-        //scan face
-        if (myBinder != null) {
-            myBinder.startTakePicAndUnlock();
-        } else {
-            Log.i("Detect Service", "myBinder is null");
-        }
+        Log.i("SensorService", "screen on");
+        //tell manager to scan face
+        EventBus.getDefault().post(Message.SCREEN_ON);
     }
 
 
     @Override
     public void onCreate() {
-        Log.i("Detect Service", "onCreate excute");
         super.onCreate();
         resetPosition = true;
-        //bind scanFace service
-        Intent intent = new Intent(this, ScanFace.class);
-        bindService(intent, mConnection, BIND_AUTO_CREATE);
         //get sensor device
         sManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        mSensorOrientation= sManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-        //DISABLE KEYGUARD
+        mSensorOrientation = sManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        //disable keyguard
         KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
         KeyguardManager.KeyguardLock keyguardLock = km.newKeyguardLock("");
         keyguardLock.disableKeyguard();
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        myReceiver = new MyReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Intent.ACTION_SCREEN_ON);
-        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
-        registerReceiver(myReceiver, intentFilter);
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "bright");
-        return START_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
+    public boolean onUnbind(Intent intent) {
         sManager.unregisterListener(this);
         unregisterReceiver(myReceiver);
-        if (mConnection != null)
-            unbindService(mConnection);
-        super.onDestroy();
+        //enable keyguard
+        KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+        KeyguardManager.KeyguardLock keyguardLock = km.newKeyguardLock("");
+        keyguardLock.reenableKeyguard();
+
+        return super.onUnbind(intent);
     }
 
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-
         float angle2, angle3;
         float[] values = event.values;
         angle2 = (float) (Math.round(values[1] * 100)) / 100;
@@ -128,7 +104,7 @@ public class DetectService extends Service implements SensorEventListener {
     }
 
     private void wakeScreen() {
-        wl.acquire();
+        wl.acquire(10);
         wl.release();
     }
 
@@ -142,14 +118,16 @@ public class DetectService extends Service implements SensorEventListener {
         return angle2 < -20 && angle2 > -60 && angle3 > -40 && angle3 < 40;
     }
 
-    @Override
-    public boolean stopService(Intent name) {
-        return super.stopService(name);
-    }
 
     @Override
     public IBinder onBind(Intent intent) {
+        myReceiver = new MyReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_SCREEN_ON);
+        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+        registerReceiver(myReceiver, intentFilter);
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "bright");
         return null;
     }
-
 }
