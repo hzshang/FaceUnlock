@@ -31,7 +31,7 @@ public class Storage {
     private static final String PREFERENCE_KEY="com.hzshang.faceUnlock.Key";
     private static final String FACE_DIR="faceDir";
     private static final String NAME_KEY="_name";
-    private static final String PIN_QUESTION_INDEX="pin_question_index";
+    private static final String PIN_QUESTION="pin_question";
     private static final String PIN_PROTECT_ANSWER_TEXT="pin_protect_answer_text";
     private static final String PIN_SET="PIN_SET";
     // group id for every phone
@@ -151,10 +151,10 @@ public class Storage {
         return new File(dir, faceId);
     }
 
-    static public void setPinProtect(Context context, int index, String answer) {
+    static public void setPinProtect(Context context, String question, String answer) {
         sharedPreferences = getSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(PIN_QUESTION_INDEX, index);
+        editor.putString(PIN_QUESTION,question);
         editor.putString(PIN_PROTECT_ANSWER_TEXT, answer);
         editor.apply();
     }
@@ -165,17 +165,17 @@ public class Storage {
         return faceIds == null||faceIds.isEmpty();
     }
 
-    static public Object[] getPinProtect(Context context) {
+    static public String[] getPinProtect(Context context) {
         sharedPreferences = getSharedPreferences(context);
-        Object[] object = new Object[2];
-        object[0] = sharedPreferences.getInt(PIN_QUESTION_INDEX, -1);
+        String[] object = new String[2];
+        object[0] = sharedPreferences.getString(PIN_QUESTION, null);
         object[1] = sharedPreferences.getString(PIN_PROTECT_ANSWER_TEXT, null);
         return object;
     }
 
     static public boolean hasPinProtect(Context context) {
         sharedPreferences = getSharedPreferences(context);
-        return sharedPreferences.contains(PIN_QUESTION_INDEX);
+        return sharedPreferences.contains(PIN_QUESTION);
     }
 
     static public void deleteUserInLocal(Context context, String faceId) {

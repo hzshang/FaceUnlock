@@ -3,26 +3,27 @@ package com.hzshang.faceunlock.service;
 import android.app.Notification;
 import android.app.NotificationManager;
 
-import android.app.PendingIntent;
 import android.app.Service;
-import android.app.TaskStackBuilder;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.github.omadahealth.lollipin.lib.managers.AppLock;
 import com.hzshang.faceunlock.LockActivity;
-import com.hzshang.faceunlock.MainActivity;
 import com.hzshang.faceunlock.R;
+import com.hzshang.faceunlock.common.App;
 import com.hzshang.faceunlock.common.Message;
+import com.hzshang.faceunlock.lib.Storage;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 
 public class ManagerService extends Service {
     private ServiceConnection sensorCon = new ServiceConnection() {
@@ -71,8 +72,10 @@ public class ManagerService extends Service {
             }
         };
         handler = new Handler();
-
-
+        Bundle bundle=intent.getExtras();
+        if(bundle.getBoolean(App.bootIntent)){
+            handleFail();
+        }
         super.onStartCommand(intent, flags, startId);
         return START_STICKY;
     }
@@ -121,7 +124,12 @@ public class ManagerService extends Service {
     }
 
     private void handleFail() {
-        Intent intent=new Intent(this, LockActivity.class);
-        startActivity(intent);
+        if(!Storage.firstSetPwd(this)){
+            Intent intent = new Intent(this, LockActivity.class);
+            intent.putExtra(AppLock.EXTRA_TYPE,AppLock.UNLOCK_PIN);
+            startActivity(intent);
+        }else{
+            Log.i("ManagerService","password not set");
+        }
     }
 }

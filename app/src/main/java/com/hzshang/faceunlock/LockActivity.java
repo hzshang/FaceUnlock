@@ -1,65 +1,50 @@
 package com.hzshang.faceunlock;
 
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
-import com.hzshang.faceunlock.common.Dialog;
+import android.view.View;
+import com.github.omadahealth.lollipin.lib.managers.LockManager;
+import com.hzshang.faceunlock.common.CheckPinProtect;
 import com.github.omadahealth.lollipin.lib.managers.AppLockActivity;
-import uk.me.lewisdeane.ldialogs.BaseDialog;
-import uk.me.lewisdeane.ldialogs.CustomDialog;
-
+import com.hzshang.faceunlock.common.Dialog;
+import com.hzshang.faceunlock.lib.Storage;
 
 public class LockActivity extends AppLockActivity {
-
-
     @Override
     public void showForgotDialog() {
-        Resources res = getResources();
-        // Create the builder with required paramaters - Context, Title, Positive Text
-        CustomDialog.Builder builder = new CustomDialog.Builder(this,
-                res.getString(R.string.activity_dialog_title),
-                res.getString(R.string.activity_dialog_accept));
-        builder.content(res.getString(R.string.activity_dialog_content));
-        builder.negativeText(res.getString(R.string.activity_dialog_decline));
-
-        //Set theme
-        builder.darkTheme(false);
-        builder.typeface(Typeface.SANS_SERIF);
-        builder.positiveColor(res.getColor(R.color.light_blue_500)); // int res, or int colorRes parameter versions available as well.
-        builder.negativeColor(res.getColor(R.color.light_blue_500));
-        builder.rightToLeft(false); // Enables right to left positioning for languages that may require so.
-        builder.titleAlignment(BaseDialog.Alignment.CENTER);
-        builder.buttonAlignment(BaseDialog.Alignment.CENTER);
-        builder.setButtonStacking(false);
-        builder.titleTextSize((int) res.getDimension(R.dimen.activity_dialog_title_size));
-        builder.contentTextSize((int) res.getDimension(R.dimen.activity_dialog_content_size));
-        builder.positiveButtonTextSize((int) res.getDimension(R.dimen.activity_dialog_positive_button_size));
-        builder.negativeButtonTextSize((int) res.getDimension(R.dimen.activity_dialog_negative_button_size));
-
-        //Build the dialog.
-        CustomDialog customDialog = builder.build();
-        customDialog.setCanceledOnTouchOutside(false);
-        customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        customDialog.setClickListener(new CustomDialog.ClickListener() {
-            @Override
-            public void onConfirmClick() {
-                Dialog.showDialog("Yes",LockActivity.this);
-            }
-
-            @Override
-            public void onCancelClick() {
-                Dialog.showDialog("No",LockActivity.this);
-            }
-        });
-
-        // Show the dialog.
-        customDialog.show();
+        if (Storage.hasPinProtect(this)) {
+            final CheckPinProtect checkPinProtect = new CheckPinProtect(this) {
+                @Override
+                public void onClick(View view) {
+                    switch (view.getId()) {
+                        case R.id.confirm_pin_protected_check:
+                            if(isAnswerIsCorrect()){
+                                LockManager<LockActivity> lockManager=LockManager.getInstance();
+                                lockManager.getAppLock().setPasscode("1234");
+                                Dialog.showDialog("密码已重设为1234,请及时修改",LockActivity.this);
+                            }else{
+                                Dialog.showDialog(getString(R.string.pin_protect_input_wrong),LockActivity.this);
+                            }
+                            dismiss();
+                            break;
+                        case R.id.cancle_pin_protected_check:
+                            dismiss();
+                            break;
+                        default:
+                            dismiss();
+                            break;
+                    }
+                }
+            };
+            checkPinProtect.show();
+        } else {
+            Dialog.showDialog(getString(R.string.pin_protect_not_set), this);
+        }
     }
+
     @Override
     public int getContentView() {
         return R.layout.activity_lock;
     }
+
     @Override
     public void onPinFailure(int attempts) {
 
@@ -67,10 +52,12 @@ public class LockActivity extends AppLockActivity {
 
     @Override
     public void onPinSuccess(int attempts) {
-        finish();
     }
+
     @Override
     public int getPinLength() {
-        return 4;
+        return super.getPinLength();
     }
+
+
 }

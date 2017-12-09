@@ -13,11 +13,11 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
-
 import com.github.omadahealth.lollipin.lib.managers.AppLock;
-import com.github.omadahealth.lollipin.lib.managers.LockManager;
+import com.hzshang.faceunlock.common.App;
+import com.hzshang.faceunlock.common.CheckPinProtect;
 import com.hzshang.faceunlock.common.Dialog;
-import com.hzshang.faceunlock.lib.SetPinProtect;
+import com.hzshang.faceunlock.common.SetPinProtect;
 import com.hzshang.faceunlock.lib.Storage;
 import com.hzshang.faceunlock.service.ManagerService;
 import java.util.List;
@@ -63,10 +63,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_CODE_ENABLE:
-                LockManager<LockActivity> lockManager=LockManager.getInstance();
-                lockManager.getAppLock().setLogoId(R.drawable.security_lock);
-                lockManager.getAppLock().setTimeout(10000);
-                lockManager.enableAppLock(this, LockActivity.class);
                 Storage.removeFirstSetPwd(this);
                 break;
         }
@@ -77,8 +73,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         managerUser.setOnClickListener(this);
         boolean isrunning = serviceIsRunning(ManagerService.class);
         //stop service if user is empty
-        if(Storage.userIsEmpty(this)&&isrunning){
-            isrunning=false;
+        if (Storage.userIsEmpty(this) && isrunning) {
+            isrunning = false;
             Intent managerService = new Intent(MainActivity.this, ManagerService.class);
             stopService(managerService);
         }
@@ -111,45 +107,72 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 EnablePin();
                 break;
             case R.id.pin_protect_set:
-                SetPinProtect setPinProtect = new SetPinProtect(MainActivity.this) {
-                    @Override
-                    public void onClick(View view) {
-                        switch (view.getId()) {
-                            case R.id.set_pin_protection_confirm:
-                                String answerText = answer.getText().toString();
-                                int index = questions.getSelectedItemPosition();
-                                if (answerText.equals("")) {
-                                    Dialog.showDialog(getString(R.string.pin_protect_empty_error), MainActivity.this);
-                                } else {
-                                    Dialog.showDialog(getString(R.string.pin_protect_set_success), MainActivity.this);
-                                    Storage.setPinProtect(MainActivity.this, questions.getSelectedItemPosition(), answer.getText().toString());
-                                    dismiss();
-                                }
-                                break;
-                            case R.id.set_pin_protection_cancle:
-                                dismiss();
-                                break;
-                        }
-                    }
-                };
-                setPinProtect.show();
+                readyChangePinProtect();
                 break;
             case R.id.testView:
-                Log.i("MainActivity","disable Pin");
-                LockManager<LockActivity> lockManager = LockManager.getInstance();
-                lockManager.disableAppLock();
+                Log.i("MainActivity", "disable Pin");
+                Intent intent = new Intent(MainActivity.this, LockActivity.class);
+                intent.putExtra(AppLock.EXTRA_TYPE, AppLock.UNLOCK_PIN);
+                startActivity(intent);
                 break;
         }
     }
 
+    private void readyChangePinProtect() {
+        if(Storage.hasPinProtect(this)){
+            CheckPinProtect checkPinProtect=new CheckPinProtect(this){
+                @Override
+                public void onClick(View view) {
+                    switch (view.getId()){
+                        case R.id.confirm_pin_protected_check:
+                            if(isAnswerIsCorrect()){
+                                dismiss();
+                                changePinProtect();
+                            }else{
+                                Dialog.showDialog(getString(R.string.pin_protect_input_wrong),MainActivity.this);
+                                dismiss();
+                            }
+                            break;
+                        case R.id.cancle_pin_protected_check:
+                            dismiss();
+                            break;
+                    }
+                }
+            };
+            checkPinProtect.show();
+        }else{
+            changePinProtect();
+        }
+    }
+    private void changePinProtect(){
+        SetPinProtect setPinProtect = new SetPinProtect(MainActivity.this) {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.set_pin_protection_confirm:
+                        String answerText = answer.getText().toString();
+                        int index = questions.getSelectedItemPosition();
+                        if (answerText.equals("")) {
+                            Dialog.showDialog(getString(R.string.pin_protect_empty_error), MainActivity.this);
+                        } else {
+                            Dialog.showDialog(getString(R.string.pin_protect_set_success), MainActivity.this);
+                            Storage.setPinProtect(MainActivity.this, questions.getSelectedItem().toString(), answer.getText().toString());
+                            dismiss();
+                        }
+                        break;
+                    case R.id.set_pin_protection_cancle:
+                        dismiss();
+                        break;
+                }
+            }
+        };
+        setPinProtect.show();
+    }
+
     private void EnablePin() {
-        //set new pin code
-        LockManager<LockActivity> lockManager=LockManager.getInstance();
-        lockManager.enableAppLock(this,LockActivity.class);
-        lockManager.getAppLock().setLogoId(R.drawable.security_lock);
         Intent intent = new Intent(MainActivity.this, LockActivity.class);
-        intent.putExtra(AppLock.EXTRA_TYPE,AppLock.ENABLE_PINLOCK);
-        startActivityForResult(intent, REQUEST_CODE_ENABLE);
+        intent.putExtra(AppLock.EXTRA_TYPE, AppLock.ENABLE_PINLOCK);
+        startActivityForResult(intent,REQUEST_CODE_ENABLE);
     }
 
     private boolean checkPermission() {
@@ -157,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         if (!ret) {
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECEIVE_BOOT_COMPLETED},
                     REQUEST_PERMISSION_CODE);
         }
         return ret;
@@ -166,25 +189,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
         Intent managerService = new Intent(MainActivity.this, ManagerService.class);
+        managerService.putExtra(App.bootIntent, false);
         if (isChecked) {
-            if (checkPermission()) {
-                if (Storage.userIsEmpty(this)) {
+            if (checkPermission()) {//检查权限
+                if (!Storage.userIsEmpty(this)) {//检查用户是否为空
+                    if (Storage.hasPinProtect(this)) {//检查是否设置密保
+                        if(!Storage.firstSetPwd(this)){//检查是否设置密码
+                            startService(managerService);//检测完成，开启服务
+                            Dialog.showDialog(getString(R.string.service_start), this);
+                        }else{//引导设置密码
+                            Dialog.showDialog(getString(R.string.lock_is_disable), this);
+                            compoundButton.setChecked(false);
+                            EnablePin();
+                        }
+                    } else {//引导设置密保
+                        compoundButton.setChecked(false);
+                        Dialog.showDialog(getString(R.string.should_set_pin_protect),this);
+                        readyChangePinProtect();
+                    }
+                } else {//引导添加用户
                     Dialog.showDialog(getString(R.string.empty_user), this);
                     compoundButton.setChecked(false);
                     openManagerUser();
-                }else{
-                    if(!Storage.firstSetPwd(this)){
-                        startService(managerService);
-                        Dialog.showDialog(getString(R.string.service_start), this);
-                    }else{
-                        Dialog.showDialog(getString(R.string.lock_is_disable),this);
-                        EnablePin();
-                    }
                 }
-            } else {
+            } else {//权限不足
+                Dialog.showDialog(getString(R.string.permission_limited),this);
                 compoundButton.setChecked(false);
             }
-        } else {
+        } else {//关闭服务
             if (stopService(managerService)) {
                 Dialog.showDialog(getString(R.string.service_stop), this);
             }
@@ -207,6 +239,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
-
-
 }

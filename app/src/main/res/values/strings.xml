@@ -41,12 +41,17 @@
     <string name="upload_confirm">确认</string>
     <string name="reCamera">重拍</string>
     <string name="title_activity_lockactivity">Lockactivity</string>
+    <string name="permission_limited">权限不足，无法开启服务</string>
 
     <string name="pin_protect_question">密保问题</string>
     <string name="pin_protect_answer">密保答案</string>
     <string name="pin_protect_set_success">密保设置成功</string>
     <string name="pin_protect_empty_error">密保问题不允许为空</string>
-    <string name="pin_protect_check">输入密保</string>
+    <string name="pin_protect_not_set">您未设置密保</string>
+    <string name="pin_protect_check">检查密保</string>
+    <string name="pin_protect_input_wrong">密保输入有误</string>
+    <string name="should_set_pin_protect">请先设置密保</string>
+
     <string name="confirm">确认</string>
     <string name="cancel">取消</string>
     <string name="pin_code_forgot_text">忘记密码？</string>
