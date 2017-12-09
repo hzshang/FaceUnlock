@@ -3,13 +3,11 @@ package com.hzshang.faceunlock.lib;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.hzshang.faceunlock.R;
@@ -29,7 +27,7 @@ public abstract class checkPinProtect extends Dialog implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        View view = View.inflate(context, R.layout.setpinprotection,null);
+        View view = View.inflate(context, R.layout.set_pin_protection_dialog,null);
         WindowManager m = getWindow().getWindowManager();
         Display d = m.getDefaultDisplay();
         WindowManager.LayoutParams p = getWindow().getAttributes();

@@ -9,7 +9,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import com.hzshang.faceunlock.R;
 
 /**
@@ -27,7 +26,7 @@ public abstract class SetPinProtect extends Dialog implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        View view = View.inflate(context,R.layout.setpinprotection,null);
+        View view = View.inflate(context,R.layout.set_pin_protection_dialog,null);
         WindowManager m = getWindow().getWindowManager();
         Display d = m.getDefaultDisplay();
         WindowManager.LayoutParams p = getWindow().getAttributes();

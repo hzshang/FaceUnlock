@@ -1,12 +1,23 @@
 package com.hzshang.faceunlock.service;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+
+import android.app.PendingIntent;
 import android.app.Service;
+import android.app.TaskStackBuilder;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.hzshang.faceunlock.LockActivity;
+import com.hzshang.faceunlock.MainActivity;
+import com.hzshang.faceunlock.R;
 import com.hzshang.faceunlock.common.Message;
 
 import org.greenrobot.eventbus.EventBus;
@@ -37,6 +48,10 @@ public class ManagerService extends Service {
             return;
         }
     };
+    private NotificationManager mNotifyMgr;
+    private Runnable runnable;
+    private final int notiId=1;
+    private Handler handler;
 
 
     @Override
@@ -49,6 +64,15 @@ public class ManagerService extends Service {
         bindService(scanService, scanCon, BIND_AUTO_CREATE);
 
         EventBus.getDefault().register(this);
+        mNotifyMgr= (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        runnable= new Runnable(){
+            public void run() {
+                mNotifyMgr.cancel(notiId);
+            }
+        };
+        handler = new Handler();
+
+
         super.onStartCommand(intent, flags, startId);
         return START_STICKY;
     }
@@ -71,15 +95,33 @@ public class ManagerService extends Service {
             case Message.SCREEN_ON:
                 EventBus.getDefault().post(Message.SCAN_FACE);
                 break;
-            case Message.RETURN_CONFIDENCE:
-                break;
             case Message.FACE_PASS:
+                handleSuccess();
                 break;
             case Message.FACE_FAIL:
+                handleFail();
                 break;
             default:
                 break;
         }
     }
 
+    private void handleSuccess() {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle("通知")
+                        .setContentText("欢迎回来")
+                        .setAutoCancel(true)
+                        .setDefaults(Notification.DEFAULT_ALL)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        mNotifyMgr.notify(notiId, mBuilder.build());
+        handler.postDelayed(runnable,500);
+    }
+
+    private void handleFail() {
+        Intent intent=new Intent(this, LockActivity.class);
+        startActivity(intent);
+    }
 }

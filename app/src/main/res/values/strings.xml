@@ -36,7 +36,7 @@
     <string name="error_camera_permission">相机权限请求失败</string>
     <string name="forget_pw">请使用人脸解锁</string>
     <string name="empty_user">未添加用户</string>
-
+    <string name="lock_is_disable">请先添加密码锁</string>
 
     <string name="upload_confirm">确认</string>
     <string name="reCamera">重拍</string>
@@ -48,7 +48,14 @@
     <string name="pin_protect_empty_error">密保问题不允许为空</string>
     <string name="pin_protect_check">输入密保</string>
     <string name="confirm">确认</string>
-    <string name="cancle">取消</string>
+    <string name="cancel">取消</string>
+    <string name="pin_code_forgot_text">忘记密码？</string>
+    <string name="delete_user">删除用户</string>
+    <string name="delete_user_done">用户已删除</string>
+    <string name="delete_user_error">用户删除失败</string>
+    <string name="delete_user_doing">正在删除用户...</string>
+    <string name="service_start">开启人脸解锁模式</string>
+    <string name="service_stop">关闭人脸解锁</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

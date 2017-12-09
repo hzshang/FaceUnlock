@@ -1,32 +1,26 @@
 package com.hzshang.faceunlock.service;
 
 import android.app.Service;
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.ResultReceiver;
 import android.util.Log;
-import android.widget.TextView;
 
-import com.hzshang.faceunlock.R;
 import com.hzshang.faceunlock.camera.TakePicture;
 import com.hzshang.faceunlock.common.Message;
 import com.hzshang.faceunlock.lib.Async;
 import com.hzshang.faceunlock.lib.Identify;
-import com.hzshang.faceunlock.testActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+
+import id.zelory.compressor.Compressor;
 
 /*
 *this service is for scan face
@@ -42,6 +36,7 @@ public class ScanService extends Service {
             TakePicture.StartTakePicture(getApplicationContext(), receiver);
         } else {
             Log.i("ScanService", "TooBusy!");
+            EventBus.getDefault().post(Message.FACE_FAIL);
         }
     }
 
@@ -61,10 +56,9 @@ public class ScanService extends Service {
 
     private void handleFace(Bitmap face) {
         Log.i("ScanService", "getFace!");
-        //save face
         try {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            face.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            face.compress(Bitmap.CompressFormat.JPEG, 50, stream);
             byte[] byteArray = stream.toByteArray();
             new Identify(this, new Async.interFace<Double,String>() {
                 @Override

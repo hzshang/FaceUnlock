@@ -1,17 +1,11 @@
 package com.hzshang.faceunlock;
 
-import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import com.hzshang.faceunlock.common.Dialog;
-import com.github.omadahealth.lollipin.lib.managers.AppLock;
 import com.github.omadahealth.lollipin.lib.managers.AppLockActivity;
-
-import java.util.concurrent.locks.Lock;
-
 import uk.me.lewisdeane.ldialogs.BaseDialog;
 import uk.me.lewisdeane.ldialogs.CustomDialog;
 
@@ -38,6 +32,10 @@ public class LockActivity extends AppLockActivity {
         builder.titleAlignment(BaseDialog.Alignment.CENTER);
         builder.buttonAlignment(BaseDialog.Alignment.CENTER);
         builder.setButtonStacking(false);
+        builder.titleTextSize((int) res.getDimension(R.dimen.activity_dialog_title_size));
+        builder.contentTextSize((int) res.getDimension(R.dimen.activity_dialog_content_size));
+        builder.positiveButtonTextSize((int) res.getDimension(R.dimen.activity_dialog_positive_button_size));
+        builder.negativeButtonTextSize((int) res.getDimension(R.dimen.activity_dialog_negative_button_size));
 
         //Build the dialog.
         CustomDialog customDialog = builder.build();
@@ -58,7 +56,10 @@ public class LockActivity extends AppLockActivity {
         // Show the dialog.
         customDialog.show();
     }
-
+    @Override
+    public int getContentView() {
+        return R.layout.activity_lock;
+    }
     @Override
     public void onPinFailure(int attempts) {
 
@@ -70,6 +71,6 @@ public class LockActivity extends AppLockActivity {
     }
     @Override
     public int getPinLength() {
-        return super.getPinLength();//you can override this method to change the pin length from the default 4
+        return 4;
     }
 }

@@ -1,4 +1,4 @@
-package com.hzshang.faceunlock;
+package com.hzshang.faceunlock.test;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hzshang.faceunlock.R;
 import com.hzshang.faceunlock.lib.Async;
 import com.hzshang.faceunlock.lib.Identify;
 

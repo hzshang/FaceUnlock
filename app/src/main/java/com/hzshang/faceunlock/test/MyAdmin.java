@@ -1,4 +1,4 @@
-package com.hzshang.faceunlock;
+package com.hzshang.faceunlock.test;
 
 import android.app.admin.DeviceAdminReceiver;
 import android.content.Context;

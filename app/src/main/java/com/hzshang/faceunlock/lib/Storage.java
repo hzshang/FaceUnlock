@@ -26,24 +26,32 @@ import java.util.UUID;
 
 public class Storage {
     static SharedPreferences sharedPreferences = null;
+    private static final String GROUPID_KEY="groupId";
+    private static final String FACEID_KEY="user_id_key";
+    private static final String PREFERENCE_KEY="com.hzshang.faceUnlock.Key";
+    private static final String FACE_DIR="faceDir";
+    private static final String NAME_KEY="_name";
+    private static final String PIN_QUESTION_INDEX="pin_question_index";
+    private static final String PIN_PROTECT_ANSWER_TEXT="pin_protect_answer_text";
+    private static final String PIN_SET="PIN_SET";
     // group id for every phone
     static public String getGroupId(Context context) {
         sharedPreferences = getSharedPreferences(context);
         String ret;
-        String groupIdKey = context.getString(R.string.group_id_key);
-        if (!sharedPreferences.contains(groupIdKey)) {
+        if (!sharedPreferences.contains(GROUPID_KEY)) {
             SharedPreferences.Editor edit = sharedPreferences.edit();
-            ret=createGroup(context);
-            if(ret!=null){
-                edit.putString(groupIdKey,ret);
+            ret = createGroup(context);
+            if (ret != null) {
+                edit.putString(GROUPID_KEY, ret);
                 edit.apply();
-                Log.i("Storage","add Group Fail");
+                Log.i("Storage", "add Group Fail");
             }
         } else {
-            ret = sharedPreferences.getString(groupIdKey, null);
+            ret = sharedPreferences.getString(GROUPID_KEY, null);
         }
         return ret;
     }
+
     // init group id for first use
     private static String createGroup(Context context) {
         String ret;
@@ -75,16 +83,16 @@ public class Storage {
     //return array name,faceId,face  faceUrl==faceId
     static public List<Map<String, Object>> getUsers(Context context) {
         sharedPreferences = getSharedPreferences(context);
-        Set<String> faceIds = sharedPreferences.getStringSet(context.getString(R.string.face_id_key), null);
+        Set<String> faceIds = sharedPreferences.getStringSet(FACEID_KEY, null);
         List<Map<String, Object>> array = null;
         if (faceIds != null) {
             array = new ArrayList<>();
             for (String faceId : faceIds) {
                 Map<String, Object> tmp = new HashMap<>();
-                String name = sharedPreferences.getString(faceId + context.getString(R.string.user_name_key), "");
+                String name = sharedPreferences.getString(faceId + NAME_KEY, "");
                 File facePath = getFacePath(context, faceId);
                 if (!facePath.exists()) {
-                    deleteUser();
+                    Log.i("Storage", "face error");
                     continue;
                 }
                 tmp.put("name", name);
@@ -96,24 +104,20 @@ public class Storage {
         return array;
     }
 
-    private static void deleteUser() {
-        //TODO:delete user
-        return;
-    }
 
     static public boolean addUserInLocal(Context context, String userName, String faceId, Bitmap face) {
         sharedPreferences = getSharedPreferences(context);
-        String faceKey= context.getString(R.string.face_id_key);
+
         //add faceId
-        Set<String> faceIds = sharedPreferences.getStringSet(faceKey, null);
+        Set<String> faceIds = sharedPreferences.getStringSet(FACEID_KEY, null);
         if (faceIds == null) {
             faceIds = new HashSet<>();
         }
         SharedPreferences.Editor edit = sharedPreferences.edit();
         faceIds.add(faceId);
-        edit.putStringSet(faceKey, faceIds);
+        edit.putStringSet(FACEID_KEY, faceIds);
         //add userName
-        edit.putString(faceId + context.getString(R.string.user_name_key), userName);
+        edit.putString(faceId + NAME_KEY, userName);
         //use faceId as img file name
         boolean ret;
         try {
@@ -125,7 +129,7 @@ public class Storage {
             edit.apply();
             ret = true;
         } catch (Exception e) {
-            Log.e("file error", e.toString());
+            Log.e("Storage","file error" + e.toString());
             ret = false;
         }
         return ret;
@@ -134,7 +138,7 @@ public class Storage {
     static private SharedPreferences getSharedPreferences(Context context) {
         SharedPreferences ret;
         if (sharedPreferences == null) {
-            ret = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+            ret = context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE);
         } else {
             ret = sharedPreferences;
         }
@@ -143,31 +147,63 @@ public class Storage {
 
     static private File getFacePath(Context context, String faceId) {
         ContextWrapper cw = new ContextWrapper(context);
-        File dir = cw.getDir(context.getString(R.string.user_face_dir_key), Context.MODE_PRIVATE);
+        File dir = cw.getDir(FACE_DIR, Context.MODE_PRIVATE);
         return new File(dir, faceId);
     }
-    static public void setPinProtect(Context context,int index,String answer){
-        sharedPreferences=getSharedPreferences(context);
-        SharedPreferences.Editor editor=sharedPreferences.edit();
-        editor.putInt(context.getString(R.string.pin_question_index),index);
-        editor.putString(context.getString(R.string.pin_protect_answer_text),answer);
+
+    static public void setPinProtect(Context context, int index, String answer) {
+        sharedPreferences = getSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(PIN_QUESTION_INDEX, index);
+        editor.putString(PIN_PROTECT_ANSWER_TEXT, answer);
         editor.apply();
     }
-    static public boolean userIsEmpty(Context context){
+
+    static public boolean userIsEmpty(Context context) {
         sharedPreferences = getSharedPreferences(context);
-        Set<String> faceIds = sharedPreferences.getStringSet(context.getString(R.string.face_id_key), null);
-        return faceIds==null;
-    }
-    static public Object[] getPinProtect(Context context){
-        sharedPreferences=getSharedPreferences(context);
-        Object[] object=new Object[2];
-        object[0]=sharedPreferences.getInt(context.getString(R.string.pin_question_index),-1);
-        object[1]=sharedPreferences.getString(context.getString(R.string.pin_protect_answer_text),null);
-        return object;
-    }
-    static public boolean hasPinProtect(Context context){
-        sharedPreferences=getSharedPreferences(context);
-        return sharedPreferences.contains(context.getString(R.string.pin_question_index));
+        Set<String> faceIds = sharedPreferences.getStringSet(FACEID_KEY, null);
+        return faceIds == null||faceIds.isEmpty();
     }
 
+    static public Object[] getPinProtect(Context context) {
+        sharedPreferences = getSharedPreferences(context);
+        Object[] object = new Object[2];
+        object[0] = sharedPreferences.getInt(PIN_QUESTION_INDEX, -1);
+        object[1] = sharedPreferences.getString(PIN_PROTECT_ANSWER_TEXT, null);
+        return object;
+    }
+
+    static public boolean hasPinProtect(Context context) {
+        sharedPreferences = getSharedPreferences(context);
+        return sharedPreferences.contains(PIN_QUESTION_INDEX);
+    }
+
+    static public void deleteUserInLocal(Context context, String faceId) {
+        sharedPreferences = getSharedPreferences(context);
+        Set<String> faceIds = sharedPreferences.getStringSet(FACEID_KEY, null);
+        if (faceIds != null){
+            SharedPreferences.Editor edit = sharedPreferences.edit();
+            //delete face Id
+            faceIds.remove(faceId);
+            edit.putStringSet(FACEID_KEY,faceIds);
+            //delete name
+            edit.remove(faceId+NAME_KEY);
+            //delete face image
+            getFacePath(context,faceId).delete();
+            //commit
+            edit.apply();
+        }else{
+            Log.e("Storage","faceset is null in deleteUserInLocal");
+        }
+    }
+    static public boolean firstSetPwd(Context context){
+        sharedPreferences=getSharedPreferences(context);
+        return sharedPreferences.getBoolean(PIN_SET,true);
+    }
+    static public void removeFirstSetPwd(Context context){
+        sharedPreferences=getSharedPreferences(context);
+        SharedPreferences.Editor edit=sharedPreferences.edit();
+        edit.putBoolean(PIN_SET,false);
+        edit.apply();
+    }
 }

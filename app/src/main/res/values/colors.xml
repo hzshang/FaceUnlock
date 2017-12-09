@@ -7,4 +7,5 @@
     <color name="colorTextBack">#f0efef</color>
     <color name="light_gray">#dcdcdc</color>
     <color name="black_overlay">#66000000</color>
+    <color name="text_color_green_013ADF">#013adf</color>
 </resources>

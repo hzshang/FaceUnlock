@@ -8,18 +8,20 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 
+import com.github.omadahealth.lollipin.lib.managers.AppLock;
+import com.github.omadahealth.lollipin.lib.managers.LockManager;
 import com.hzshang.faceunlock.common.Dialog;
 import com.hzshang.faceunlock.lib.SetPinProtect;
 import com.hzshang.faceunlock.lib.Storage;
 import com.hzshang.faceunlock.service.ManagerService;
-import com.hzshang.faceunlock.service.SensorService;
-
 import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int REQUEST_CODE_ENABLE = 11;
@@ -44,12 +46,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
     }
 
-    private boolean serviceIsRunning(String serviceName) {
+    public boolean serviceIsRunning(Class<?> serviceClass) {
         final ActivityManager activityManager = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
         if (activityManager != null) {
-            List<ActivityManager.RunningServiceInfo> sercices = activityManager.getRunningServices(Integer.MAX_VALUE);
-            for (ActivityManager.RunningServiceInfo runningServiceInfo : sercices) {
-                if (runningServiceInfo.service.getClassName().equals(serviceName)) {
+            List<ActivityManager.RunningServiceInfo> services = activityManager.getRunningServices(Integer.MAX_VALUE);
+            for (ActivityManager.RunningServiceInfo runningServiceInfo : services) {
+                if (runningServiceInfo.service.getClassName().equals(serviceClass.getName())) {
                     return true;
                 }
             }
@@ -61,7 +63,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_CODE_ENABLE:
-                Dialog.showDialog("pin enabled", this);
+                LockManager<LockActivity> lockManager=LockManager.getInstance();
+                lockManager.getAppLock().setLogoId(R.drawable.security_lock);
+                lockManager.getAppLock().setTimeout(10000);
+                lockManager.enableAppLock(this, LockActivity.class);
+                Storage.removeFirstSetPwd(this);
                 break;
         }
     }
@@ -69,8 +75,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initView() {
         LinearLayout managerUser = (LinearLayout) findViewById(R.id.manager_user);
         managerUser.setOnClickListener(this);
-        //face switch button
-        boolean isrunning = serviceIsRunning(SensorService.class.getName());
+        boolean isrunning = serviceIsRunning(ManagerService.class);
+        //stop service if user is empty
+        if(Storage.userIsEmpty(this)&&isrunning){
+            isrunning=false;
+            Intent managerService = new Intent(MainActivity.this, ManagerService.class);
+            stopService(managerService);
+        }
         Switch faceUnlockSwitch = (Switch) findViewById(R.id.switch_face);
         faceUnlockSwitch.setChecked(isrunning);
         faceUnlockSwitch.setOnCheckedChangeListener(this);
@@ -97,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 openManagerUser();
                 break;
             case R.id.pin_set:
-                //TODO
+                EnablePin();
                 break;
             case R.id.pin_protect_set:
                 SetPinProtect setPinProtect = new SetPinProtect(MainActivity.this) {
@@ -124,16 +135,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setPinProtect.show();
                 break;
             case R.id.testView:
-//                Intent intent1 = new Intent(MainActivity.this, testActivity.class);
-//                startActivity(intent1);
+                Log.i("MainActivity","disable Pin");
+                LockManager<LockActivity> lockManager = LockManager.getInstance();
+                lockManager.disableAppLock();
                 break;
         }
+    }
+
+    private void EnablePin() {
+        //set new pin code
+        LockManager<LockActivity> lockManager=LockManager.getInstance();
+        lockManager.enableAppLock(this,LockActivity.class);
+        lockManager.getAppLock().setLogoId(R.drawable.security_lock);
+        Intent intent = new Intent(MainActivity.this, LockActivity.class);
+        intent.putExtra(AppLock.EXTRA_TYPE,AppLock.ENABLE_PINLOCK);
+        startActivityForResult(intent, REQUEST_CODE_ENABLE);
     }
 
     private boolean checkPermission() {
         boolean ret = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-//                ContextCompat.checkSelfPermission(this, Manifest.permission.SYSTEM_ALERT_WINDOW) == PackageManager.PERMISSION_GRANTED;
         if (!ret) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -152,17 +173,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     compoundButton.setChecked(false);
                     openManagerUser();
                 }else{
-                    startService(managerService);
-                    Dialog.showDialog("start service success", this);
+                    if(!Storage.firstSetPwd(this)){
+                        startService(managerService);
+                        Dialog.showDialog(getString(R.string.service_start), this);
+                    }else{
+                        Dialog.showDialog(getString(R.string.lock_is_disable),this);
+                        EnablePin();
+                    }
                 }
             } else {
                 compoundButton.setChecked(false);
             }
         } else {
             if (stopService(managerService)) {
-                Dialog.showDialog("stop service success", this);
-            } else {
-                Dialog.showDialog("stop service fail", this);
+                Dialog.showDialog(getString(R.string.service_stop), this);
             }
         }
     }
