@@ -58,7 +58,7 @@
 
     <string name="confirm">确认</string>
     <string name="cancel">取消</string>
-    <string name="pin_code_forgot_text">忘记密码？</string>
+    <string name="pin_code_forgot_text"> </string>
     <string name="delete_user">删除用户</string>
     <string name="delete_user_done">用户已删除</string>
     <string name="delete_user_error">用户删除失败</string>

@@ -3,7 +3,6 @@ package com.hzshang.faceunlock;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.Dialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -24,16 +23,12 @@ import android.widget.Switch;
 import com.github.omadahealth.lollipin.lib.managers.AppLock;
 import com.github.omadahealth.lollipin.lib.managers.LockManager;
 import com.hzshang.faceunlock.common.App;
-import com.hzshang.faceunlock.dialog.CheckPinProtect;
 import com.hzshang.faceunlock.dialog.DialogMessage;
 import com.hzshang.faceunlock.dialog.OverLayDialog;
-import com.hzshang.faceunlock.dialog.SetPinProtect;
 import com.hzshang.faceunlock.lib.Storage;
 import com.hzshang.faceunlock.receiver.MyAdmin;
 import com.hzshang.faceunlock.service.ManagerService;
 import com.hzshang.faceunlock.test.testActivity;
-
-import java.lang.reflect.Field;
 import java.util.List;
 
 
@@ -117,8 +112,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         faceUnlockSwitch.setOnCheckedChangeListener(this);
         LinearLayout pinSetting = (LinearLayout) findViewById(R.id.pin_set);
         pinSetting.setOnClickListener(this);
-        LinearLayout pinProtect = (LinearLayout) findViewById(R.id.pin_protect_set);
-        pinProtect.setOnClickListener(this);
         LinearLayout testView = (LinearLayout) findViewById(R.id.testView);
         testView.setOnClickListener(this);
         LinearLayout licienceView = (LinearLayout) findViewById(R.id.licience_view);
@@ -162,71 +155,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.pin_set:
                 EnablePin();
                 break;
-            case R.id.pin_protect_set:
-                readyChangePinProtect();
-                break;
             case R.id.testView:
-                Log.i("MainActivity", "disable Pin");
-                Intent intent = new Intent(this, testActivity.class);
-                startActivity(intent);
                 break;
+//                Log.i("MainActivity", "disable Pin");
+//                Intent intent = new Intent(this, testActivity.class);
+//                startActivity(intent);
+//                break;
             case R.id.licience_view:
                 break;
         }
     }
 
-    //修改密保前验证前密保
-    private void readyChangePinProtect() {
-        if (Storage.hasPinProtect(this)) {
-            CheckPinProtect checkPinProtect = new CheckPinProtect(this) {
-                @Override
-                public void onClick(View view) {
-                    switch (view.getId()) {
-                        case R.id.confirm_pin_protected_check:
-                            if (isAnswerIsCorrect()) {
-                                dismiss();
-                                changePinProtect();
-                            } else {
-                                DialogMessage.showDialog(getString(R.string.pin_protect_input_wrong), MainActivity.this);
-                                dismiss();
-                            }
-                            break;
-                        case R.id.cancle_pin_protected_check:
-                            dismiss();
-                            break;
-                    }
-                }
-            };
-            checkPinProtect.show();
-        } else {
-            changePinProtect();
-        }
-    }
-
-    private void changePinProtect() {
-        SetPinProtect setPinProtect = new SetPinProtect(MainActivity.this) {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.set_pin_protection_confirm:
-                        String answerText = answer.getText().toString();
-                        int index = questions.getSelectedItemPosition();
-                        if (answerText.equals("")) {
-                            DialogMessage.showDialog(getString(R.string.pin_protect_empty_error), MainActivity.this);
-                        } else {
-                            DialogMessage.showDialog(getString(R.string.pin_protect_set_success), MainActivity.this);
-                            Storage.setPinProtect(MainActivity.this, questions.getSelectedItem().toString(), answer.getText().toString());
-                            dismiss();
-                        }
-                        break;
-                    case R.id.set_pin_protection_cancle:
-                        dismiss();
-                        break;
-                }
-            }
-        };
-        setPinProtect.show();
-    }
 
     private void EnablePin() {
         Intent intent = new Intent(MainActivity.this, LockActivity.class);
@@ -263,19 +202,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (isChecked) {//准备开启服务
             if (checkPermission()) {//检查权限
                 if (!Storage.userIsEmpty(this)) {//检查用户是否为空
-                    if (Storage.hasPinProtect(this)) {//检查是否设置密保
-                        if (lockManager.getAppLock().isPasscodeSet()) {//检查是否设置密码
-                            startService(managerService);//检测完成，开启服务
-                            DialogMessage.showDialog(getString(R.string.service_start), this);
-                        } else {//引导设置密码
-                            DialogMessage.showDialog(getString(R.string.lock_is_disable), this);
-                            compoundButton.setChecked(false);
-                            EnablePin();
-                        }
-                    } else {//引导设置密保
+                    if (lockManager.getAppLock().isPasscodeSet()) {//检查是否设置密码
+                        startService(managerService);//检测完成，开启服务
+                        DialogMessage.showDialog(getString(R.string.service_start), this);
+                    } else {//引导设置密码
+                        DialogMessage.showDialog(getString(R.string.lock_is_disable), this);
                         compoundButton.setChecked(false);
-                        DialogMessage.showDialog(getString(R.string.should_set_pin_protect), this);
-                        readyChangePinProtect();
+                        EnablePin();
                     }
                 } else {//引导添加用户
                     DialogMessage.showDialog(getString(R.string.empty_user), this);

@@ -2,47 +2,15 @@ package com.hzshang.faceunlock;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import com.github.omadahealth.lollipin.lib.managers.LockManager;
 import com.hzshang.faceunlock.common.Message;
-import com.hzshang.faceunlock.dialog.CheckPinProtect;
 import com.github.omadahealth.lollipin.lib.managers.AppLockActivity;
-import com.hzshang.faceunlock.dialog.DialogMessage;
-import com.hzshang.faceunlock.lib.Storage;
 import org.greenrobot.eventbus.EventBus;
 
 public class LockActivity extends AppLockActivity {
     private boolean unlock=false;
     @Override
     public void showForgotDialog() {
-        if (Storage.hasPinProtect(this)) {
-            final CheckPinProtect checkPinProtect = new CheckPinProtect(this) {
-                @Override
-                public void onClick(View view) {
-                    switch (view.getId()) {
-                        case R.id.confirm_pin_protected_check:
-                            if(isAnswerIsCorrect()){
-                                LockManager<LockActivity> lockManager=LockManager.getInstance();
-                                lockManager.getAppLock().setPasscode("1234");
-                                DialogMessage.showDialog("密码已重设为1234,请及时修改",LockActivity.this);
-                            }else{
-                                DialogMessage.showDialog(getString(R.string.pin_protect_input_wrong),LockActivity.this);
-                            }
-                            dismiss();
-                            break;
-                        case R.id.cancle_pin_protected_check:
-                            dismiss();
-                            break;
-                        default:
-                            dismiss();
-                            break;
-                    }
-                    LockActivity.this.hideNavigation();
-                }
-            };
-            checkPinProtect.show();
-        } else {
-            DialogMessage.showDialog(getString(R.string.pin_protect_not_set), this);
-        }
+
     }
 
     @Override
@@ -64,12 +32,16 @@ public class LockActivity extends AppLockActivity {
 
     @Override
     protected void onPause(){
+        super.onPause();
+        finish();
+    }
+    @Override
+    protected void onDestroy(){
         if(!unlock){
             EventBus.getDefault().post(Message.USER_EXCEPT);
         }
-        super.onPause();
+        super.onDestroy();
     }
-
     @Override
     public void onPinSuccess(int attempts) {
         Log.i("LockActivity","pinSuccess");

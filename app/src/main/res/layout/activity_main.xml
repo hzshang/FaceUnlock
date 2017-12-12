@@ -196,48 +196,6 @@
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="58dp" />
 
-            <LinearLayout
-                android:id="@+id/pin_protect_set"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@drawable/selector"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/ic_pin_protect"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:id="@+id/text_pin_protect"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:gravity="center"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="@string/pin_protect"
-                    android:textAlignment="textStart"
-                    android:textAppearance="@style/TextAppearance.AppCompat"
-                    tools:ignore="RtlCompat" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/ic_arrow"
-                    tools:ignore="ContentDescription" />
-
-            </LinearLayout>
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
