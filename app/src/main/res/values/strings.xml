@@ -37,12 +37,14 @@
     <string name="forget_pw">请使用人脸解锁</string>
     <string name="empty_user">未添加用户</string>
     <string name="lock_is_disable">请先添加密码锁</string>
+    <string name="lock_set_success">密码设置成功</string>
 
     <string name="upload_confirm">确认</string>
     <string name="reCamera">重拍</string>
     <string name="title_activity_lockactivity">Lockactivity</string>
     <string name="permission_limited">权限不足，无法开启服务</string>
-
+    <string name="ask_for_overlay">为保证正常服务，请允许应用在其他应用上层显示和锁屏权限</string>
+    <string name="admin_label">请求解锁</string>
     <string name="pin_protect_question">密保问题</string>
     <string name="pin_protect_answer">密保答案</string>
     <string name="pin_protect_set_success">密保设置成功</string>
@@ -51,6 +53,8 @@
     <string name="pin_protect_check">检查密保</string>
     <string name="pin_protect_input_wrong">密保输入有误</string>
     <string name="should_set_pin_protect">请先设置密保</string>
+    <string name="ask_overlay_title">请求权限</string>
+    <string name="overlay_fail">悬浮窗权限请求失败</string>
 
     <string name="confirm">确认</string>
     <string name="cancel">取消</string>
@@ -61,13 +65,5 @@
     <string name="delete_user_doing">正在删除用户...</string>
     <string name="service_start">开启人脸解锁模式</string>
     <string name="service_stop">关闭人脸解锁</string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="activity_not_locked_text">Nothing should happen on this page, here for test purpose</string>
-    <string name="activity_dialog_title">Forgot you Pincode?</string>
-    <string name="activity_dialog_accept">OK</string>
-    <string name="activity_dialog_decline">CANCEL</string>
-    <string name="activity_dialog_content">Tap \'OK\' to log out, when you log back in you\'ll be able to create a new Pincode.\n\nIf you remember your Pincode, tap \'Cancel\' to go back.</string>
-    <string name="activity_appcompat_message">I am a PinCompatActivity!</string>
+    <string name="lock_screen_fail">锁屏权限请求失败</string>
 </resources>

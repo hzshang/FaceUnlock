@@ -18,6 +18,7 @@ android {
     }
     productFlavors {
     }
+
 }
 
 allprojects {
@@ -55,3 +56,4 @@ dependencies {
     testCompile 'junit:junit:4.12'
     implementation files('libs/FaceppSDK.jar')
 }
+

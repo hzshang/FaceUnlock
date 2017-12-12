@@ -1,13 +1,9 @@
 package com.hzshang.faceunlock;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.hzshang.faceunlock.common.Dialog;
+import com.hzshang.faceunlock.dialog.DialogMessage;
 import com.hzshang.faceunlock.lib.AddFaceToGroup;
 import com.hzshang.faceunlock.lib.DetectFace;
 import com.hzshang.faceunlock.lib.Face;
@@ -88,7 +84,7 @@ public class AddUser extends AppCompatActivity {
             public void processFinish(Object[] out) {
                 if (!(boolean) out[0]) {
                     progressDialog.dismiss();
-                    Dialog.showDialog((String) out[1], AddUser.this);
+                    DialogMessage.showDialog((String) out[1], AddUser.this);
                 } else {
                     upFace = (Face) out[1];
                     addFace2Group();
@@ -112,7 +108,7 @@ public class AddUser extends AppCompatActivity {
         if (!name.equals(""))
             detectFace();
         else
-            Dialog.showDialog(getString(R.string.error_userName), AddUser.this);
+            DialogMessage.showDialog(getString(R.string.error_userName), AddUser.this);
     }
 
     private void addFace2Group() {
@@ -126,7 +122,7 @@ public class AddUser extends AppCompatActivity {
             public void processFinish(Object[] ret) {
                 progressDialog.dismiss();
                 if (!(boolean)ret[0]) {
-                    Dialog.showDialog((String) ret[1], AddUser.this);
+                    DialogMessage.showDialog((String) ret[1], AddUser.this);
                 } else {
                     success();
                 }
@@ -150,9 +146,9 @@ public class AddUser extends AppCompatActivity {
         String name = userName.getText().toString();
         Bitmap cropped = Bitmap.createBitmap(bitmap, upFace.left, upFace.top, upFace.width, upFace.height);
         if (Storage.addUserInLocal(this, name, upFace.faceToken, cropped)) {
-            Dialog.showDialog(getString(R.string.add_user_success), this);
+            DialogMessage.showDialog(getString(R.string.add_user_success), this);
         } else {
-            Dialog.showDialog(getString(R.string.error_add_user), this);
+            DialogMessage.showDialog(getString(R.string.error_add_user), this);
         }
         finish();
     }

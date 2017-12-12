@@ -11,7 +11,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.hzshang.faceunlock.R;
-import com.hzshang.faceunlock.common.Dialog;
+import com.hzshang.faceunlock.dialog.DialogMessage;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,7 +21,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 
 public class Storage {
@@ -74,7 +73,7 @@ public class Storage {
         try {
             ret = addGroup.execute().get();
         } catch (Exception e) {
-            Dialog.showDialog(context.getString(R.string.error_network), context);
+            DialogMessage.showDialog(context.getString(R.string.error_network), context);
             ret = null;
         }
         return ret;

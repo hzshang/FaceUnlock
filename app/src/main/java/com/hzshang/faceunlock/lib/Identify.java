@@ -1,7 +1,6 @@
 package com.hzshang.faceunlock.lib;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.hzshang.faceunlock.R;
 import com.hzshang.faceunlock.common.App;

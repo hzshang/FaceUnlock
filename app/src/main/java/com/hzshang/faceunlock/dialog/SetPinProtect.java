@@ -1,4 +1,4 @@
-package com.hzshang.faceunlock.common;
+package com.hzshang.faceunlock.dialog;
 
 import android.app.Dialog;
 import android.content.Context;

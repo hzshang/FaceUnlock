@@ -48,7 +48,6 @@ public class ScanService extends Service {
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 busy = false;
                 Bitmap face = resultData.getParcelable(TakePicture.BITMAP);
-//                byte[] face=resultData.getByteArray(TakePicture.BITMAP);
                 handleFace(face);
             }
         };
@@ -82,7 +81,7 @@ public class ScanService extends Service {
         if(out<threshold){
             EventBus.getDefault().post(Message.FACE_FAIL);
         }else{
-            EventBus.getDefault().post(Message.FACE_PASS);
+            EventBus.getDefault().post(Message.PASS);
         }
     }
 

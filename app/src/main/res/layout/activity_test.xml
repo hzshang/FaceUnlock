@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,18 +7,40 @@
     android:padding="5dp"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/test_imageView"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
+    <Button
+        android:id="@+id/lock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/ic_avatar" />
+        android:layout_marginStart="133dp"
+        android:layout_marginTop="90dp"
+        android:text="lock" />
 
-    <TextView
-        android:id="@+id/test_textView"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_weight="1"
-        android:text="TextView" />
-</LinearLayout>
+    <Button
+        android:id="@+id/unlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/lock"
+        android:layout_below="@+id/lock"
+        android:layout_marginTop="57dp"
+        android:text="unlock" />
+
+    <Button
+        android:id="@+id/refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/unlock"
+        android:layout_below="@+id/unlock"
+        android:layout_marginTop="56dp"
+        android:text="refresh" />
+
+    <Button
+        android:id="@+id/setAdmin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/refresh"
+        android:layout_below="@+id/refresh"
+        android:layout_marginTop="50dp"
+        android:text="setAdmin" />
+</RelativeLayout>

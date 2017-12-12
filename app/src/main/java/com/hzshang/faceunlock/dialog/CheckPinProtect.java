@@ -1,9 +1,10 @@
-package com.hzshang.faceunlock.common;
+package com.hzshang.faceunlock.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -19,10 +20,10 @@ import com.hzshang.faceunlock.lib.Storage;
 
 public abstract class CheckPinProtect extends Dialog implements View.OnClickListener {
     private Context context;
-    protected EditText answer;
-    protected TextView question;
-    protected String pin_answer;
-    public CheckPinProtect(Context context) {
+    private EditText answer;
+    private TextView question;
+    private String pin_answer;
+    protected CheckPinProtect(Context context) {
         super(context);
         this.context=context;
     }
@@ -45,8 +46,17 @@ public abstract class CheckPinProtect extends Dialog implements View.OnClickList
         confirm.setOnClickListener(this);
         cancle.setOnClickListener(this);
         setContentView(view);
+        setCanceledOnTouchOutside(false);
+        hideNavigation();
     }
     protected boolean isAnswerIsCorrect(){
         return answer.getText().toString().equals(pin_answer);
     }
+    private void hideNavigation(){
+        int uiOptions =  View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY|View.SYSTEM_UI_FLAG_LOW_PROFILE
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        getWindow().getDecorView().setSystemUiVisibility(uiOptions);
+    }
+
+
 }
