@@ -31,10 +31,10 @@ public class App extends Application {
         runnable=new Runnable() {
             @Override
             public void run() {
-                unlocked=false;
+                timeout=true;
             }
         };
-        unlocked=false;
+        timeout=true;
     }
 
     public static CommonOperate getCommonOperate(){
@@ -43,18 +43,18 @@ public class App extends Application {
     public static FaceSetOperate getFaceSet(){
         return FaceSet;
     }
-    public static void setUnlock(){
-        unlocked=true;
+    public static void resetTimeOut(){
+        timeout=false;
         handler.postDelayed(runnable,60000);
     }
 
-    public static boolean getUnlock(){
-        return unlocked;
+    public static boolean isTimeout(){
+        return timeout;
     }
     private static CommonOperate commonOperate=null;
     private static FaceSetOperate FaceSet=null;
     public static final String bootIntent="BOOTINTENT";
-    private static boolean unlocked;
+    private static boolean timeout;
     private static Handler handler;
     private static Runnable runnable;
 

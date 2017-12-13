@@ -72,7 +72,7 @@ public class ManagerService extends Service {
             case Message.SCREEN_ON:
                 EventBus.getDefault().post(Message.SCAN_FACE);
                 break;
-            case Message.PASS:
+            case Message.FACE_PASS:
                 handleSuccess();
                 break;
             case Message.FACE_FAIL:

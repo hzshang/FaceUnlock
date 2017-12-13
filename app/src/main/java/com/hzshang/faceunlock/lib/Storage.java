@@ -195,14 +195,14 @@ public class Storage {
             Log.e("Storage","faceset is null in deleteUserInLocal");
         }
     }
-    static public boolean firstSetPwd(Context context){
+    static public boolean isSetPwd(Context context){
         sharedPreferences=getSharedPreferences(context);
-        return sharedPreferences.getBoolean(PIN_SET,true);
+        return sharedPreferences.getBoolean(PIN_SET,false);
     }
-    static public void removeFirstSetPwd(Context context){
+    static public void setPwd(Context context){
         sharedPreferences=getSharedPreferences(context);
         SharedPreferences.Editor edit=sharedPreferences.edit();
-        edit.putBoolean(PIN_SET,false);
+        edit.putBoolean(PIN_SET,true);
         edit.apply();
     }
 }

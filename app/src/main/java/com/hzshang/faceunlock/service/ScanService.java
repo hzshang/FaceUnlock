@@ -81,7 +81,7 @@ public class ScanService extends Service {
         if(out<threshold){
             EventBus.getDefault().post(Message.FACE_FAIL);
         }else{
-            EventBus.getDefault().post(Message.PASS);
+            EventBus.getDefault().post(Message.FACE_PASS);
         }
     }
 

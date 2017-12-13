@@ -12,9 +12,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+
 import com.hzshang.faceunlock.LockActivity;
 import com.hzshang.faceunlock.R;
 import com.hzshang.faceunlock.common.Message;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -25,6 +27,7 @@ public class LockService extends Service {
     private WindowManager.LayoutParams downPms;
     private FloatView upView = null;
     private FloatView downView = null;
+    private boolean pin_passed = false;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -86,14 +89,16 @@ public class LockService extends Service {
             case Message.START_LOCK:
                 startLock();
                 break;
-            case Message.PASS:
-                removeLockView();
-                break;
             case Message.TOO_MANY_ATTEMPTS:
                 lockScreen();
                 break;
-            case Message.USER_EXCEPT:
-                lockScreen();
+            case Message.PIN_PASS:
+                pin_passed = true;
+            case Message.LOCK_EXIT:
+                if (!pin_passed)
+                    lockScreen();
+                else
+                    removeLockView();
                 break;
             default:
                 break;
@@ -102,6 +107,7 @@ public class LockService extends Service {
 
     void startLock() {
         if (upView == null && downView == null) {
+            pin_passed = false;
             upView = new FloatView(this);
             downView = new FloatView(this);
             wm.addView(upView, upPms);
@@ -113,6 +119,7 @@ public class LockService extends Service {
 
     void removeLockView() {
         if (upView != null && downView != null) {
+            pin_passed=false;
             wm.removeView(upView);
             wm.removeView(downView);
             upView = null;
@@ -126,9 +133,10 @@ public class LockService extends Service {
             LayoutInflater.from(context).inflate(R.layout.lock_float_layout, this);
         }
     }
-    private void lockScreen(){
+
+    private void lockScreen() {
         removeLockView();
-        DevicePolicyManager dpm=(DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
+        DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
         dpm.lockNow();
     }
 }
