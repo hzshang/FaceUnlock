@@ -33,6 +33,7 @@ public class Storage {
     private static final String PIN_QUESTION="pin_question";
     private static final String PIN_PROTECT_ANSWER_TEXT="pin_protect_answer_text";
     private static final String PIN_SET="PIN_SET";
+    private static final String NOTI_SWITCH="NOTI_SWITCH";
     // group id for every phone
     static public String getGroupId(Context context) {
         sharedPreferences = getSharedPreferences(context);
@@ -204,5 +205,17 @@ public class Storage {
         SharedPreferences.Editor edit=sharedPreferences.edit();
         edit.putBoolean(PIN_SET,true);
         edit.apply();
+    }
+
+    public static boolean isEnableNoti(Context context) {
+        sharedPreferences = getSharedPreferences(context);
+        boolean ret=sharedPreferences.getBoolean(NOTI_SWITCH,false);
+        return ret;
+    }
+    public static void setNoti(Context context,boolean enabled){
+        sharedPreferences = getSharedPreferences(context);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putBoolean(NOTI_SWITCH,enabled);
+        editor.commit();
     }
 }

@@ -1,7 +1,6 @@
 <resources>
-    <string name="app_name">Faceunlock</string>
-    <string name="switch_face">开启/关闭 Face Unlock</string>
-    <string name="gravity_name">重力感应角度</string>
+    <string name="app_name">Open For You</string>
+    <string name="switch_face">开启 人脸解锁</string>
     <string name="general_setting">通用设置</string>
     <string name="pin_setting">设置密码</string>
     <string name="manager_user">用户管理</string>
@@ -15,8 +14,9 @@
     <string name="pin_set">设置密码</string>
     <string name="pin_protect">设置密保</string>
     <string name="version_name">版本</string>
-    <string name="version">v0.0.1</string>
-
+    <string name="version">v1.0.0</string>
+    <string name="noti_title">通知</string>
+    <string name="noti_text">欢迎回来</string>
 
     <string name="detect">检测人脸...</string>
     <string name="create_user">创建用户....</string>
@@ -43,7 +43,7 @@
     <string name="reCamera">重拍</string>
     <string name="title_activity_lockactivity">Lockactivity</string>
     <string name="permission_limited">权限不足，无法开启服务</string>
-    <string name="ask_for_overlay">为保证正常服务，请允许应用在其他应用上层显示和锁屏权限</string>
+    <string name="ask_for_overlay">为保证正常服务，建议关闭系统锁屏并允许应用在其他应用上层显示和锁屏权限</string>
     <string name="admin_label">请求解锁</string>
     <string name="pin_protect_question">密保问题</string>
     <string name="pin_protect_answer">密保答案</string>

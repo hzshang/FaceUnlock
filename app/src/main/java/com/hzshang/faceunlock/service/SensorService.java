@@ -71,21 +71,12 @@ public class SensorService extends Service implements SensorEventListener {
         //get sensor device
         sManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mSensorOrientation = sManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-        //disable keyguard
-        KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-        KeyguardManager.KeyguardLock keyguardLock = km.newKeyguardLock("");
-        keyguardLock.disableKeyguard();
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
         sManager.unregisterListener(this);
         unregisterReceiver(myReceiver);
-        //enable keyguard
-        KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-        KeyguardManager.KeyguardLock keyguardLock = km.newKeyguardLock("");
-        keyguardLock.reenableKeyguard();
-
         return super.onUnbind(intent);
     }
 

@@ -9,6 +9,7 @@ import android.view.View;
 import com.github.omadahealth.lollipin.lib.managers.LockManager;
 import com.hzshang.faceunlock.LockActivity;
 import com.hzshang.faceunlock.R;
+import com.hzshang.faceunlock.lib.Storage;
 import com.megvii.cloud.http.CommonOperate;
 import com.megvii.cloud.http.FaceSetOperate;
 

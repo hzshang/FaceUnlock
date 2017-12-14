@@ -45,9 +45,13 @@ public class LockActivity extends AppLockActivity {
         EventBus.getDefault().post(Message.PIN_PASS);
     }
     @Override
-    public void onDestroy(){
+    public void onPause(){
         Log.i("LockActivity","Lock Destroy");
         EventBus.getDefault().post(Message.LOCK_EXIT);
+        super.onPause();
+    }
+    @Override
+    public void onDestroy(){
         super.onDestroy();
     }
 

@@ -3,6 +3,7 @@ package com.hzshang.faceunlock;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.KeyguardManager;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -36,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int REQUEST_UNLOCK_CODE = 111;
     private DevicePolicyManager dpm;
     private ComponentName admin;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+
     private void EnablePin() {
         Intent intent = new Intent(MainActivity.this, LockActivity.class);
         intent.putExtra(AppLock.EXTRA_TYPE, AppLock.ENABLE_PINLOCK);
@@ -188,6 +189,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+        switch (compoundButton.getId()){
+            case R.id.switch_face:
+                handleSwitchFace(compoundButton,isChecked);
+                break;
+        }
+
+    }
+
+
+    private void handleSwitchFace(CompoundButton compoundButton,boolean isChecked) {
         Intent managerService = new Intent(MainActivity.this, ManagerService.class);
         managerService.putExtra(App.bootIntent, false);
         if (isChecked) {//准备开启服务
@@ -215,6 +226,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
