@@ -17,6 +17,7 @@
     <string name="version">v1.0.0</string>
     <string name="noti_title">通知</string>
     <string name="noti_text">欢迎回来</string>
+    <string name="service_running">正在运行</string>
 
     <string name="detect">检测人脸...</string>
     <string name="create_user">创建用户....</string>
