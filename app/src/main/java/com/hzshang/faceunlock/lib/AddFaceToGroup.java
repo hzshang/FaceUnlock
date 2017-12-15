@@ -4,10 +4,10 @@ package com.hzshang.faceunlock.lib;
 import android.content.Context;
 import android.util.Log;
 
+import com.hzshang.faceunlock.HTTP.FaceAPI;
+import com.hzshang.faceunlock.HTTP.Response;
 import com.hzshang.faceunlock.R;
-import com.hzshang.faceunlock.common.App;
-import com.megvii.cloud.http.FaceSetOperate;
-import com.megvii.cloud.http.Response;
+
 
 
 import org.json.JSONObject;
@@ -29,11 +29,9 @@ public class AddFaceToGroup extends Async<String, String, Object[]> {
             //WAIT TO CHANGE
             publishProgress(context.getString(R.string.create_user));
             // Start the request to creating person.
-            FaceSetOperate faceSetOperate= App.getFaceSet();
-            Response response=faceSetOperate.addFaceByFaceToken(params[0],params[1]);
-            Log.i("AddFaceToGroup","faceToken:"+params[0]);
-            Log.i("AddFaceToGroup","groupId:"+params[1]);
-
+            Response response= FaceAPI.addFace(params[1],params[0]);
+            //params[0] faceToken
+            //params[1] faceSetToken
             String res=new String(response.getContent());
             if(response.getStatus()!=200){
                 ret[0]=false;

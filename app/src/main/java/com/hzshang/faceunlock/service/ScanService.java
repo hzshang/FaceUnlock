@@ -20,7 +20,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.ByteArrayOutputStream;
 
-import id.zelory.compressor.Compressor;
 
 /*
 *this service is for scan face
@@ -28,7 +27,7 @@ import id.zelory.compressor.Compressor;
 public class ScanService extends Service {
     private boolean busy;
     private ResultReceiver receiver;
-    private final double threshold=70.0;
+    private final double threshold=50.0;
 
     private void takePic() {
         if (!busy) {
@@ -57,7 +56,7 @@ public class ScanService extends Service {
         Log.i("ScanService", "getFace!");
         try {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            face.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+            face.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] byteArray = stream.toByteArray();
             new Identify(this, new Async.interFace<Double,String>() {
                 @Override

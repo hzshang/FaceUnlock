@@ -3,10 +3,10 @@ package com.hzshang.faceunlock.lib;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.hzshang.faceunlock.HTTP.FaceAPI;
+import com.hzshang.faceunlock.HTTP.Response;
 import com.hzshang.faceunlock.R;
-import com.hzshang.faceunlock.common.App;
-import com.megvii.cloud.http.FaceSetOperate;
-import com.megvii.cloud.http.Response;
 
 import org.json.JSONObject;
 
@@ -22,11 +22,10 @@ public class AddGroup extends Async<String,String,String>{
     @Override
     protected String doInBackground(String... params) {
         // Get an instance of face service client.
-        FaceSetOperate FaceSet= App.getFaceSet();
         try{
             publishProgress(context.getString(R.string.create_group));
             // Start creating person group in server.
-            Response faceset = FaceSet.createFaceSet(null,null,null,null,null, 1);
+            Response faceset = FaceAPI.createSet();
             String res = new String(faceset.getContent());
             if(faceset.getStatus()==200){
                 JSONObject jsonObject=new JSONObject(res);
@@ -36,6 +35,7 @@ public class AddGroup extends Async<String,String,String>{
                 return null;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             Log.i("AddGroup","network error");
             return null;
         }

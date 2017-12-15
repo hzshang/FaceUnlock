@@ -44,7 +44,6 @@ public class Storage {
             if (ret != null) {
                 edit.putString(GROUPID_KEY, ret);
                 edit.apply();
-                Log.i("Storage", "add Group Fail");
             }
         } else {
             ret = sharedPreferences.getString(GROUPID_KEY, null);
@@ -124,7 +123,7 @@ public class Storage {
             File facePath = getFacePath(context, faceId);
             FileOutputStream fos;
             fos = new FileOutputStream(facePath);
-            face.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            face.compress(Bitmap.CompressFormat.JPEG, 50, fos);
             fos.close();
             edit.apply();
             ret = true;

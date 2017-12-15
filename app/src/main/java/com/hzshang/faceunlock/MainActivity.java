@@ -3,7 +3,6 @@ package com.hzshang.faceunlock;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.KeyguardManager;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;

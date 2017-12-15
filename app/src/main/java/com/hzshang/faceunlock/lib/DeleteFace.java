@@ -3,11 +3,10 @@ package com.hzshang.faceunlock.lib;
 import android.content.Context;
 import android.util.Log;
 
+import com.hzshang.faceunlock.HTTP.FaceAPI;
+import com.hzshang.faceunlock.HTTP.Response;
 import com.hzshang.faceunlock.R;
-import com.hzshang.faceunlock.common.App;
-import com.megvii.cloud.http.CommonOperate;
-import com.megvii.cloud.http.FaceSetOperate;
-import com.megvii.cloud.http.Response;
+
 
 import org.json.JSONObject;
 
@@ -26,8 +25,7 @@ public class DeleteFace extends Async<String,String,Boolean> {
         Boolean ret;
         try {
             publishProgress(context.getString(R.string.delete_user_doing));
-            FaceSetOperate faceSetOperate=App.getFaceSet();
-            Response response=faceSetOperate.removeFaceFromFaceSetByFaceSetToken(group,faceId);
+            Response response= FaceAPI.deleteFace(group, faceId);
             String res=new String(response.getContent());
             if(response.getStatus()!=200){
                 ret=false;

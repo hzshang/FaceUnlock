@@ -3,11 +3,9 @@ package com.hzshang.faceunlock.lib;
 import android.content.Context;
 import android.util.Log;
 
+import com.hzshang.faceunlock.HTTP.FaceAPI;
+import com.hzshang.faceunlock.HTTP.Response;
 import com.hzshang.faceunlock.R;
-import com.hzshang.faceunlock.common.App;
-import com.megvii.cloud.http.CommonOperate;
-import com.megvii.cloud.http.Response;
-
 import org.json.JSONObject;
 
 /**
@@ -23,12 +21,12 @@ public class DetectFace extends Async<byte[], String, Object[]> {
     @Override
     protected Object[] doInBackground(byte[]... params) {
 
-        CommonOperate commonOperate = App.getCommonOperate();
         Object[] ret = new Object[2];
         try {
             publishProgress(context.getString(R.string.detect));
             // Start detection.
-            Response response = commonOperate.detectByte(params[0], 0, null);
+
+            Response response = FaceAPI.detect(params[0]);
             if (response.getStatus() != 200) {
                 ret[0] = false;
                 ret[1] = context.getString(R.string.error_network);
@@ -53,6 +51,7 @@ public class DetectFace extends Async<byte[], String, Object[]> {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             ret[0] = false;
             ret[1] = context.getString(R.string.error_network);
             Log.i("DetectFace","net error");

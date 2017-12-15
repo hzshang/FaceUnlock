@@ -1,11 +1,11 @@
 package com.hzshang.faceunlock.lib;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.hzshang.faceunlock.HTTP.FaceAPI;
+import com.hzshang.faceunlock.HTTP.Response;
 import com.hzshang.faceunlock.R;
-import com.hzshang.faceunlock.common.App;
-import com.megvii.cloud.http.CommonOperate;
-import com.megvii.cloud.http.Response;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,14 +24,14 @@ public class Identify extends Async<byte[],String,Double> {
         publishProgress(context.getString(R.string.identify));
         Double ret=0.0;
         try{
-            CommonOperate commonOperate= App.getCommonOperate();
             String groupId=Storage.getGroupId(context);
-            Response response=commonOperate.searchByFaceSetToken(null,null,params[0],groupId,1);
+            Response response= FaceAPI.search(params[0],groupId);
             String res=new String(response.getContent());
             if(response.getStatus()!=200){
                 ret=0.0;
             }else{
                 JSONObject jsonObject=new JSONObject(res);
+                Log.i("Identify",res);
                 JSONArray jsonArray=jsonObject.optJSONArray("results");
                 if(jsonArray==null || jsonArray.length()==0){
                     ret=0.0;
