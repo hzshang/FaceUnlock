@@ -1,20 +1,23 @@
 package com.hzshang.faceunlock.common;
 
-import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.os.Handler;
-import android.view.View;
-
 import com.github.omadahealth.lollipin.lib.managers.LockManager;
 import com.hzshang.faceunlock.LockActivity;
 import com.hzshang.faceunlock.R;
-import com.hzshang.faceunlock.lib.Storage;
 import com.megvii.cloud.http.CommonOperate;
 import com.megvii.cloud.http.FaceSetOperate;
 
 
 public class App extends Application {
+    private static CommonOperate commonOperate=null;
+    private static FaceSetOperate FaceSet=null;
+    public static final String bootIntent="BOOTINTENT";
+    public static final String ENABLE_GRAVITY="enable_gravity";
+    private static boolean timeout;
+    private static Handler handler;
+    private static Runnable runnable;
+
 
     @SuppressWarnings("unchecked")
     @Override
@@ -44,6 +47,7 @@ public class App extends Application {
     public static FaceSetOperate getFaceSet(){
         return FaceSet;
     }
+    //解锁后60秒以内免密码
     public static void resetTimeOut(){
         timeout=false;
         handler.postDelayed(runnable,60000);
@@ -52,11 +56,6 @@ public class App extends Application {
     public static boolean isTimeout(){
         return timeout;
     }
-    private static CommonOperate commonOperate=null;
-    private static FaceSetOperate FaceSet=null;
-    public static final String bootIntent="BOOTINTENT";
-    private static boolean timeout;
-    private static Handler handler;
-    private static Runnable runnable;
+
 
 }

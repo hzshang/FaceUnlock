@@ -29,7 +29,6 @@ public class ScanService extends Service {
     private boolean busy;
     private ResultReceiver receiver;
     private final double threshold=70.0;
-
     private void takePic() {
         if (!busy) {
             busy = true;

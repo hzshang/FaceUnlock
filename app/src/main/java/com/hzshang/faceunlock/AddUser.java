@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
 import com.hzshang.faceunlock.dialog.DialogMessage;
 import com.hzshang.faceunlock.lib.AddFaceToGroup;
 import com.hzshang.faceunlock.lib.DetectFace;

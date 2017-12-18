@@ -3,7 +3,7 @@ package com.hzshang.faceunlock;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.KeyguardManager;
+import android.app.Dialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -34,15 +34,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int REQUEST_PERMISSION_CODE = 1;
     private static final int REQUEST_OVERLAY_CODE = 2;
     private static final int REQUEST_LOCKSCREEN_CODE = 3;
-    private static final int REQUEST_UNLOCK_CODE = 111;
+    private static final int REQUEST_UNLOCK_CODE = 111;//just random number
+    private static final int REQUEST_CHANGE_PIN=12312;
+
     private DevicePolicyManager dpm;
     private ComponentName admin;
+    private Switch gravitySwitch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
         admin = new ComponentName(this, MyAdmin.class);
+        gravitySwitch=(Switch)findViewById(R.id.switch_gravity);
     }
 
     @Override
@@ -75,6 +79,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case REQUEST_ENABLE_PIN:
                 Storage.setPwd(this);
                 DialogMessage.showDialog(getString(R.string.lock_set_success), this);
+                App.resetTimeOut();
+                break;
+            case REQUEST_CHANGE_PIN:
+                DialogMessage.showDialog(getString(R.string.lock_change_success),this);
+                App.resetTimeOut();
                 break;
             case REQUEST_UNLOCK_CODE:
                 App.resetTimeOut();
@@ -107,10 +116,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         faceUnlockSwitch.setOnCheckedChangeListener(this);
         LinearLayout pinSetting = (LinearLayout) findViewById(R.id.pin_set);
         pinSetting.setOnClickListener(this);
-        LinearLayout testView = (LinearLayout) findViewById(R.id.testView);
-        testView.setOnClickListener(this);
-        LinearLayout licienceView = (LinearLayout) findViewById(R.id.licience_view);
-        licienceView.setOnClickListener(this);
+
+        gravitySwitch.setChecked(Storage.getGravitySwitch(this));
+        gravitySwitch.setOnCheckedChangeListener(this);
+        //服务开启时不可修改重力唤醒
+        gravitySwitch.setClickable(!isrunning);
     }
 
     private void openManagerUser() {
@@ -148,7 +158,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 openManagerUser();
                 break;
             case R.id.pin_set:
-                EnablePin();
+                if(Storage.isSetPwd(this)){
+                    ChangePin();
+                }else{
+                    EnablePin();
+                }
                 break;
             case R.id.testView:
                 break;
@@ -157,12 +171,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void ChangePin() {
+        Intent intent = new Intent(MainActivity.this, LockActivity.class);
+        intent.putExtra(AppLock.EXTRA_TYPE, AppLock.CHANGE_PIN);
+        startActivityForResult(intent, REQUEST_CHANGE_PIN);
+    }
 
 
     private void EnablePin() {
         Intent intent = new Intent(MainActivity.this, LockActivity.class);
         intent.putExtra(AppLock.EXTRA_TYPE, AppLock.ENABLE_PINLOCK);
         startActivityForResult(intent, REQUEST_ENABLE_PIN);
+        Storage.setLock(this,true);
     }
 
     private boolean checkPermission() {
@@ -193,20 +213,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.switch_face:
                 handleSwitchFace(compoundButton,isChecked);
                 break;
+            case R.id.switch_gravity:
+                Storage.setGravitySwitch(this,isChecked);
+                break;
         }
-
     }
 
 
     private void handleSwitchFace(CompoundButton compoundButton,boolean isChecked) {
-        Intent managerService = new Intent(MainActivity.this, ManagerService.class);
-        managerService.putExtra(App.bootIntent, false);
+
         if (isChecked) {//准备开启服务
             if (checkPermission()) {//检查权限
                 if (!Storage.userIsEmpty(this)) {//检查用户是否为空
                     if (Storage.isSetPwd(this)) {//检查是否设置密码
-                        startService(managerService);//检测完成，开启服务
-                        DialogMessage.showDialog(getString(R.string.service_start), this);
+                        //检测完成，开启服务
+                        EnableFaceUnlock();
                     } else {//引导设置密码
                         DialogMessage.showDialog(getString(R.string.lock_is_disable), this);
                         compoundButton.setChecked(false);
@@ -221,10 +242,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 compoundButton.setChecked(false);
             }
         } else {//关闭服务
-            if (stopService(managerService)) {
-                DialogMessage.showDialog(getString(R.string.service_stop), this);
-            }
+            DisableFaceLock();
         }
+    }
+
+    private void DisableFaceLock() {
+        Intent managerService = new Intent(MainActivity.this, ManagerService.class);
+        if (stopService(managerService)) {
+            Storage.setLock(this,false);
+            DialogMessage.showDialog(getString(R.string.service_stop), this);
+            gravitySwitch.setClickable(true);
+        }
+    }
+
+    private void EnableFaceUnlock(){
+        Intent managerService = new Intent(MainActivity.this, ManagerService.class);
+        managerService.putExtra(App.bootIntent, false);
+        managerService.putExtra(App.ENABLE_GRAVITY,gravitySwitch.isChecked());
+        startService(managerService);
+        DialogMessage.showDialog(getString(R.string.service_start), this);
+        gravitySwitch.setClickable(false);
     }
 
 
