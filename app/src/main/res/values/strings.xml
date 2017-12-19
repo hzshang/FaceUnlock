@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Open For You</string>
     <string name="switch_face">开启 人脸解锁</string>
+    <string name="switch_gravity">开启 重力唤醒</string>
     <string name="general_setting">通用设置</string>
     <string name="pin_setting">设置密码</string>
     <string name="manager_user">用户管理</string>
@@ -14,9 +15,10 @@
     <string name="pin_set">设置密码</string>
     <string name="pin_protect">设置密保</string>
     <string name="version_name">版本</string>
-    <string name="version">v1.0.0</string>
+    <string name="version">v1.0.1</string>
     <string name="noti_title">通知</string>
     <string name="noti_text">欢迎回来</string>
+    <string name="service_running">正在运行</string>
 
     <string name="detect">检测人脸...</string>
     <string name="create_user">创建用户....</string>
@@ -38,6 +40,7 @@
     <string name="empty_user">未添加用户</string>
     <string name="lock_is_disable">请先添加密码锁</string>
     <string name="lock_set_success">密码设置成功</string>
+    <string name="lock_change_success">密码修改成功</string>
 
     <string name="upload_confirm">确认</string>
     <string name="reCamera">重拍</string>
@@ -55,6 +58,10 @@
     <string name="should_set_pin_protect">请先设置密保</string>
     <string name="ask_overlay_title">请求权限</string>
     <string name="overlay_fail">悬浮窗权限请求失败</string>
+    <string name="pin_code_step_enable_confirm">确认密码</string>
+    <string name="pin_code_step_change">验证密码</string>
+    <string name="pin_code_step_create">添加密码</string>
+    <string name="pin_code_step_unlock">输入密码</string>
 
     <string name="confirm">确认</string>
     <string name="cancel">取消</string>

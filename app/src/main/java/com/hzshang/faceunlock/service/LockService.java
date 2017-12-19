@@ -20,14 +20,14 @@ import com.hzshang.faceunlock.common.Message;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
+//人脸解锁失败后，开启锁屏
 public class LockService extends Service {
     private WindowManager wm;
     private WindowManager.LayoutParams upPms;
     private WindowManager.LayoutParams downPms;
     private FloatView upView = null;
     private FloatView downView = null;
-    private boolean pin_passed = false;
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -56,22 +56,12 @@ public class LockService extends Service {
                 WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |//全屏幕布局, 不受状态栏影响
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
         downPms.format = PixelFormat.TRANSLUCENT;
-
         downPms.gravity = Gravity.LEFT | Gravity.TOP;
-
         downPms.x = 0;
         downPms.y = p.y - 200;
         downPms.width = p.x;
         downPms.height = 200;
 
-//        downPms = new WindowManager.LayoutParams(
-//                WindowManager.LayoutParams.MATCH_PARENT,
-//                150,
-//                WindowManager.LayoutParams.TYPE_SYSTEM_ERROR,
-//                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |//允许任何在该窗口之外的触摸事件传递到该窗口以下的控件
-//                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |//弹出的View收不到Back键的事件
-//                        WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,//全屏幕布局, 不受状态栏影响
-//                PixelFormat.TRANSLUCENT);
         EventBus.getDefault().register(this);
         return null;
     }
@@ -92,13 +82,14 @@ public class LockService extends Service {
             case Message.TOO_MANY_ATTEMPTS:
                 lockScreen();
                 break;
-            case Message.PIN_PASS:
-                pin_passed = true;
+
             case Message.LOCK_EXIT:
-                if (!pin_passed)
-                    lockScreen();
-                else
-                    removeLockView();
+                removeLockView();
+//                if (!pin_passed)
+//                    //lock activity 退出时检测，如果非正常解锁，立即锁屏
+//                    lockScreen();
+//                else
+//                    removeLockView();
                 break;
             default:
                 break;
@@ -107,7 +98,7 @@ public class LockService extends Service {
 
     void startLock() {
         if (upView == null && downView == null) {
-            pin_passed = false;
+
             upView = new FloatView(this);
             downView = new FloatView(this);
             wm.addView(upView, upPms);
@@ -119,7 +110,7 @@ public class LockService extends Service {
 
     void removeLockView() {
         if (upView != null && downView != null) {
-            pin_passed=false;
+
             wm.removeView(upView);
             wm.removeView(downView);
             upView = null;

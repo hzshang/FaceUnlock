@@ -16,7 +16,6 @@ public class MyAdmin extends DeviceAdminReceiver {
     public void onEnabled(Context context, Intent intent) {
     }
 
-
     @Override
     public void onDisabled(Context context, Intent intent) {
     }

@@ -1,11 +1,8 @@
 package com.hzshang.faceunlock;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-
-import com.github.omadahealth.lollipin.lib.managers.AppLock;
 import com.hzshang.faceunlock.common.Message;
 import com.github.omadahealth.lollipin.lib.managers.AppLockActivity;
 
@@ -46,12 +43,14 @@ public class LockActivity extends AppLockActivity {
     }
     @Override
     public void onPause(){
-        Log.i("LockActivity","Lock Destroy");
         EventBus.getDefault().post(Message.LOCK_EXIT);
+        Log.i("LockActivity","I will finish myself");
+        finish();
         super.onPause();
     }
     @Override
     public void onDestroy(){
+        Log.i("LockActivity","Lock Destroy");
         super.onDestroy();
     }
 
@@ -60,7 +59,7 @@ public class LockActivity extends AppLockActivity {
         return super.getPinLength();
     }
 
-
+    //隐藏系统导航栏
     private void hideNavigation() {
         int uiOptions = View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
