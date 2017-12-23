@@ -171,9 +171,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void ChangePin() {
-        Intent intent = new Intent(MainActivity.this, LockActivity.class);
-        intent.putExtra(AppLock.EXTRA_TYPE, AppLock.CHANGE_PIN);
-        startActivityForResult(intent, REQUEST_CHANGE_PIN);
+        if(serviceIsRunning(ManagerService.class)){
+            DialogMessage.showDialog(getString(R.string.cant_change_pin),this);
+        }else{
+            Intent intent = new Intent(MainActivity.this, LockActivity.class);
+            intent.putExtra(AppLock.EXTRA_TYPE, AppLock.CHANGE_PIN);
+            startActivityForResult(intent, REQUEST_CHANGE_PIN);
+        }
     }
 
 
@@ -181,7 +185,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent(MainActivity.this, LockActivity.class);
         intent.putExtra(AppLock.EXTRA_TYPE, AppLock.ENABLE_PINLOCK);
         startActivityForResult(intent, REQUEST_ENABLE_PIN);
-        Storage.setLock(this,true);
     }
 
     private boolean checkPermission() {
@@ -248,7 +251,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void DisableFaceLock() {
         Intent managerService = new Intent(MainActivity.this, ManagerService.class);
         if (stopService(managerService)) {
-            Storage.setLock(this,false);
             DialogMessage.showDialog(getString(R.string.service_stop), this);
             gravitySwitch.setClickable(true);
         }

@@ -17,7 +17,7 @@ import com.hzshang.faceunlock.lib.Storage;
 /**
  * Created by hzshang on 2017/12/1.
  */
-
+//输入密保时会打开输入法，不安全，弃用
 public abstract class CheckPinProtect extends Dialog implements View.OnClickListener {
     private Context context;
     private EditText answer;

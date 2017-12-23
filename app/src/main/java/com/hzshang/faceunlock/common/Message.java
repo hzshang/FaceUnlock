@@ -13,4 +13,5 @@ public class Message {
     public static final String TOO_MANY_ATTEMPTS="EVENT_TOO_MANY_ATTEMPTS";
     public static final String LOCK_EXIT="EVENT_LOCK_EXIT";
     public static final String PIN_PASS="EVENT_PIN_PASS";
+    public static final String LOCK_EXIT_FROM_SERVICE = "EVENT_LOCK_EXIT_FROM_SERVICE";
 }

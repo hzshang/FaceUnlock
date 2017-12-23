@@ -8,16 +8,13 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.ResultReceiver;
 import android.util.Log;
-
 import com.hzshang.faceunlock.camera.TakePicture;
 import com.hzshang.faceunlock.common.Message;
 import com.hzshang.faceunlock.lib.Async;
 import com.hzshang.faceunlock.lib.Identify;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.io.ByteArrayOutputStream;
 
 /*
