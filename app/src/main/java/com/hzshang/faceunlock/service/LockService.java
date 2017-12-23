@@ -7,12 +7,14 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
+import com.github.omadahealth.lollipin.lib.managers.AppLock;
 import com.hzshang.faceunlock.LockActivity;
 import com.hzshang.faceunlock.R;
 import com.hzshang.faceunlock.common.Message;
@@ -85,11 +87,6 @@ public class LockService extends Service {
 
             case Message.LOCK_EXIT:
                 removeLockView();
-//                if (!pin_passed)
-//                    //lock activity 退出时检测，如果非正常解锁，立即锁屏
-//                    lockScreen();
-//                else
-//                    removeLockView();
                 break;
             default:
                 break;
@@ -98,7 +95,6 @@ public class LockService extends Service {
 
     void startLock() {
         if (upView == null && downView == null) {
-
             upView = new FloatView(this);
             downView = new FloatView(this);
             wm.addView(upView, upPms);
@@ -110,7 +106,7 @@ public class LockService extends Service {
 
     void removeLockView() {
         if (upView != null && downView != null) {
-
+            EventBus.getDefault().post(Message.LOCK_EXIT_FROM_SERVICE);
             wm.removeView(upView);
             wm.removeView(downView);
             upView = null;

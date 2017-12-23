@@ -73,4 +73,5 @@
     <string name="service_start">开启人脸解锁模式</string>
     <string name="service_stop">关闭人脸解锁</string>
     <string name="lock_screen_fail">锁屏权限请求失败</string>
+    <string name="cant_change_pin">请先关闭人脸解锁</string>
 </resources>

@@ -17,8 +17,8 @@ import java.util.Map.Entry;
 
 
 public class HttpRequest {
-    private static final int CONNECT_TIME_OUT = 30000;
-    private static final int READ_OUT_TIME = 50000;
+    private static final int CONNECT_TIME_OUT = 5000;
+    private static final int READ_OUT_TIME = 5000;
     private static String boundaryString = getBoundary();
 
     static Response post(String url, HashMap<String, String> map, HashMap<String, byte[]> fileMap) throws Exception {

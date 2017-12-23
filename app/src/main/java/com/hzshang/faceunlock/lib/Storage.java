@@ -33,7 +33,6 @@ public class Storage {
     private static final String PIN_QUESTION="pin_question";
     private static final String PIN_PROTECT_ANSWER_TEXT="pin_protect_answer_text";
     private static final String PIN_SET="PIN_SET";
-    private static final String LOCK_ENABLE="LOCK_ENABLE";
     private static final String GRAVITY_ENABLE="GRAVITY_ENABLE";
     // group id for every phone
     static public String getGroupId(Context context) {
@@ -150,7 +149,7 @@ public class Storage {
         File dir = cw.getDir(FACE_DIR, Context.MODE_PRIVATE);
         return new File(dir, faceId);
     }
-    //忘记密码后使用密保功能，由于会调用输入法引发安全问题，后期将其删除
+    //忘记密码后使用密保功能，由于会调用输入法，用户可能退出activity，弃用
     static public void setPinProtect(Context context, String question, String answer) {
         sharedPreferences = getSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -172,7 +171,7 @@ public class Storage {
         object[1] = sharedPreferences.getString(PIN_PROTECT_ANSWER_TEXT, null);
         return object;
     }
-
+//      检测是否设置密保，弃用
     static public boolean hasPinProtect(Context context) {
         sharedPreferences = getSharedPreferences(context);
         return sharedPreferences.contains(PIN_QUESTION);
@@ -196,6 +195,7 @@ public class Storage {
             Log.e("Storage","faceset is null in deleteUserInLocal");
         }
     }
+    //检查是否设置密码
     static public boolean isSetPwd(Context context){
         sharedPreferences=getSharedPreferences(context);
         return sharedPreferences.getBoolean(PIN_SET,false);
@@ -206,17 +206,14 @@ public class Storage {
         edit.putBoolean(PIN_SET,true);
         edit.apply();
     }
+//
+//    static public void setLock(Context context,boolean isEnable){
+//        sharedPreferences=getSharedPreferences(context);
+//        SharedPreferences.Editor editor=sharedPreferences.edit();
+//        editor.putBoolean(LOCK_ENABLE,isEnable);
+//        editor.apply();
+//    }
 
-    static public void setLock(Context context,boolean isEnable){
-        sharedPreferences=getSharedPreferences(context);
-        SharedPreferences.Editor editor=sharedPreferences.edit();
-        editor.putBoolean(LOCK_ENABLE,isEnable);
-        editor.apply();
-    }
-    static public boolean getLock(Context context){
-        sharedPreferences=getSharedPreferences(context);
-        return sharedPreferences.getBoolean(LOCK_ENABLE,false);
-    }
     static public boolean getGravitySwitch(Context context){
         sharedPreferences=getSharedPreferences(context);
         return sharedPreferences.getBoolean(GRAVITY_ENABLE,false);
