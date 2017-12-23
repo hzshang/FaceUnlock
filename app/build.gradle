@@ -49,7 +49,6 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:support-v13:26.1.0'
     compile 'uk.me.lewisdeane.ldialogs:ldialogs:1.2.0@aar'
-    compile 'id.zelory:compressor:2.1.0'
     compile('com.github.omadahealth:lollipin:2.1.0@aar') {
         transitive = true
     }

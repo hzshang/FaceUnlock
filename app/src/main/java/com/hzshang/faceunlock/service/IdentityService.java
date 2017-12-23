@@ -20,12 +20,10 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.ByteArrayOutputStream;
 
-import id.zelory.compressor.Compressor;
-
 /*
-*this service is for scan face
+*this service is for scan face and identity
 */
-public class ScanService extends Service {
+public class IdentityService extends Service {
     private boolean busy;
     private ResultReceiver receiver;
     private final double threshold=70.0;
@@ -34,7 +32,7 @@ public class ScanService extends Service {
             busy = true;
             TakePicture.StartTakePicture(getApplicationContext(), receiver);
         } else {
-            Log.i("ScanService", "TooBusy!");
+            Log.i("IdentityService", "TooBusy!");
             EventBus.getDefault().post(Message.FACE_FAIL);
         }
     }
@@ -53,7 +51,7 @@ public class ScanService extends Service {
     }
 
     private void handleFace(Bitmap face) {
-        Log.i("ScanService", "getFace!");
+        Log.i("IdentityService", "getFace!");
         try {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             face.compress(Bitmap.CompressFormat.JPEG, 50, stream);
@@ -76,7 +74,7 @@ public class ScanService extends Service {
     }
 
     private void handleConfidence(Double out) {
-        Log.i("ScanService","confidence is "+out.toString());
+        Log.i("IdentityService","confidence is "+out.toString());
         if(out<threshold){
             EventBus.getDefault().post(Message.FACE_FAIL);
         }else{
@@ -99,7 +97,7 @@ public class ScanService extends Service {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(String event) {
         if(event.equals(Message.SCAN_FACE)){
-            Log.i("ScanService","begin to scan face");
+            Log.i("IdentityService","begin to scan face");
             takePic();
         }
     }

@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import com.hzshang.faceunlock.R;
-import com.hzshang.faceunlock.receiver.MyAdmin;
+import com.hzshang.faceunlock.receiver.DeviceAdmin;
 
 public class testActivity extends AppCompatActivity implements View.OnClickListener {
     private DevicePolicyManager dpm;
@@ -20,7 +20,7 @@ public class testActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
-        admin = new ComponentName(this, MyAdmin.class);
+        admin = new ComponentName(this, DeviceAdmin.class);
         if (!dpm.isAdminActive(admin)) {
             Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
             intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, admin);

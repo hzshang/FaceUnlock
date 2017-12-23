@@ -41,11 +41,11 @@ public class LockActivity extends AppLockActivity {
         Log.i("LockActivity", "pinSuccess");
         EventBus.getDefault().post(Message.PIN_PASS);
     }
+    //有问题？
     @Override
     public void onPause(){
         EventBus.getDefault().post(Message.LOCK_EXIT);
-        Log.i("LockActivity","I will finish myself");
-        finish();
+        Log.i("LockActivity","onPause");
         super.onPause();
     }
     @Override
