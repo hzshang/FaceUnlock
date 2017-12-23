@@ -51,7 +51,7 @@
             android:name=".service.SensorService"
             android:enabled="true" />
         <service
-            android:name=".service.ScanService"
+            android:name=".service.IdentityService"
             android:enabled="true" />
         <service
             android:name=".camera.TakePicture"
@@ -70,7 +70,7 @@
         </receiver>
 
         <receiver
-            android:name=".receiver.MyAdmin"
+            android:name=".receiver.DeviceAdmin"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data
                 android:name="android.app.device_admin"

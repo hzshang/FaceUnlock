@@ -23,7 +23,7 @@ import com.hzshang.faceunlock.common.App;
 import com.hzshang.faceunlock.dialog.DialogMessage;
 import com.hzshang.faceunlock.dialog.OverLayDialog;
 import com.hzshang.faceunlock.lib.Storage;
-import com.hzshang.faceunlock.receiver.MyAdmin;
+import com.hzshang.faceunlock.receiver.DeviceAdmin;
 import com.hzshang.faceunlock.service.ManagerService;
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int REQUEST_PERMISSION_CODE = 1;
     private static final int REQUEST_OVERLAY_CODE = 2;
     private static final int REQUEST_LOCKSCREEN_CODE = 3;
-    private static final int REQUEST_UNLOCK_CODE = 111;//just random number
+    private static final int REQUEST_UNLOCK_CODE = 111;
     private static final int REQUEST_CHANGE_PIN=12312;
 
     private DevicePolicyManager dpm;
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
-        admin = new ComponentName(this, MyAdmin.class);
+        admin = new ComponentName(this, DeviceAdmin.class);
         gravitySwitch=(Switch)findViewById(R.id.switch_gravity);
     }
 

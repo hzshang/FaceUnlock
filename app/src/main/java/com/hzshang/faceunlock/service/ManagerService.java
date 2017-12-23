@@ -45,7 +45,7 @@ public class ManagerService extends Service {
         sensorService.putExtra(App.ENABLE_GRAVITY,enableGravity);
         bindService(sensorService, sensorCon, BIND_AUTO_CREATE);
         //bind scan service
-        Intent scanService = new Intent(this, ScanService.class);
+        Intent scanService = new Intent(this, IdentityService.class);
         bindService(scanService, scanCon, BIND_AUTO_CREATE);
         //bind lock service
         Intent lockService = new Intent(this, LockService.class);

@@ -19,7 +19,9 @@ import android.view.WindowManager;
 
 import java.io.IOException;
 
-
+/*
+*   this is a camera service for taking picture background
+*/
 public class TakePicture extends Service {
     private Camera mCamera;
     private ResultReceiver mReceiver;
