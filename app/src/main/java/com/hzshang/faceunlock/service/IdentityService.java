@@ -23,7 +23,7 @@ import java.io.ByteArrayOutputStream;
 public class IdentityService extends Service {
     private boolean busy;
     private ResultReceiver receiver;
-    private final double threshold=50.0;
+    private final double threshold=40.0;
 
     private void takePic() {
         if (!busy) {
