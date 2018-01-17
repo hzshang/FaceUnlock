@@ -1,12 +1,4 @@
-FaceUnlock App
+Open For You
 ==============
-Use your face to unlock your phone
-
-
-## Log
-version 1.0.0 finished  
-2017-12-14
-
-Developing  
-2017-12-9
+一款安卓人脸解锁APP
 
