@@ -7,15 +7,13 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import com.github.omadahealth.lollipin.lib.managers.AppLock;
-import com.hzshang.faceunlock.LockActivity;
+import com.hzshang.faceunlock.UI.LockActivity;
 import com.hzshang.faceunlock.R;
 import com.hzshang.faceunlock.common.Message;
 

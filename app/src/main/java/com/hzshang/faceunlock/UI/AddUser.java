@@ -1,4 +1,4 @@
-package com.hzshang.faceunlock;
+package com.hzshang.faceunlock.UI;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import com.hzshang.faceunlock.R;
 import com.hzshang.faceunlock.dialog.DialogMessage;
 import com.hzshang.faceunlock.lib.AddFaceToGroup;
 import com.hzshang.faceunlock.lib.DetectFace;

@@ -1,4 +1,4 @@
-package com.hzshang.faceunlock;
+package com.hzshang.faceunlock.UI;
 
 import android.Manifest;
 import android.app.Activity;
@@ -19,6 +19,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import com.github.omadahealth.lollipin.lib.managers.AppLock;
+import com.hzshang.faceunlock.R;
 import com.hzshang.faceunlock.common.App;
 import com.hzshang.faceunlock.dialog.DialogMessage;
 import com.hzshang.faceunlock.dialog.OverLayDialog;
