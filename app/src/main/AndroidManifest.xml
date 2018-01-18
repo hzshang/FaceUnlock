@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".UI.MainActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -29,16 +29,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ManagerUser"
+            android:name=".UI.ManagerUser"
             android:label="@string/manager_user"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AddUser"
+            android:name=".UI.AddUser"
             android:windowSoftInputMode="adjustPan"
             android:label="@string/add_user"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LockActivity"
+            android:name=".UI.LockActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"

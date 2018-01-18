@@ -1,4 +1,4 @@
-package com.hzshang.faceunlock;
+package com.hzshang.faceunlock.UI;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.hzshang.faceunlock.R;
 import com.hzshang.faceunlock.dialog.BottomDialog;
 import com.hzshang.faceunlock.dialog.DialogMessage;
 import com.hzshang.faceunlock.lib.DeleteFace;

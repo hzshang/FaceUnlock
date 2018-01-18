@@ -1,9 +1,10 @@
-package com.hzshang.faceunlock;
+package com.hzshang.faceunlock.UI;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.hzshang.faceunlock.R;
 import com.hzshang.faceunlock.common.Message;
 import com.github.omadahealth.lollipin.lib.managers.AppLockActivity;
 

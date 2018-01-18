@@ -3,7 +3,7 @@ package com.hzshang.faceunlock.common;
 import android.app.Application;
 import android.os.Handler;
 import com.github.omadahealth.lollipin.lib.managers.LockManager;
-import com.hzshang.faceunlock.LockActivity;
+import com.hzshang.faceunlock.UI.LockActivity;
 import com.hzshang.faceunlock.R;
 import com.megvii.cloud.http.CommonOperate;
 import com.megvii.cloud.http.FaceSetOperate;
